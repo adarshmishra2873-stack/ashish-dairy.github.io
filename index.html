@@ -950,7 +950,7 @@
     m.classList.toggle('open');
   }
 
-      async function submitForm() {
+        async function submitForm() {
     const name = document.getElementById('fname').value.trim();
     const phone = document.getElementById('fphone').value.trim();
     const village = document.getElementById('fvillage').value.trim();
@@ -970,7 +970,7 @@
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwtse4FDH-rSyaGvCxsNCfPHTRHNe7Ms0BKCuGM2s6rDHqAIrtN9kMlXQO5lO25e5fs/exec';
 
     try {
-      // ब्राउज़र का सिक्योरिटी लॉक हटाने के लिए mode: 'no-cors'
+      // ब्राउज़र का सिक्योरिटी लॉक हटाने के लिए mode: 'no-cors' लगाया है
       await fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -988,16 +988,6 @@
       // सफलता का मैसेज दिखाएं
       document.getElementById('formSuccess').style.display = 'block';
       
-    } catch (error) {
-      alert('कुछ गड़बड़ हो गई, कृपया इंटरनेट चेक करें।');
-      document.querySelector('.btn-submit').style.display = 'block';
-    }
-  }
-
-
-      if (response.ok) {
-        document.getElementById('formSuccess').style.display = 'block';
-      }
     } catch (error) {
       alert('कुछ गड़बड़ हो गई, कृपया इंटरनेट चेक करें।');
       document.querySelector('.btn-submit').style.display = 'block';
