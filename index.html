@@ -397,35 +397,58 @@
     .map-placeholder .big { font-size:60px; display:block; margin-bottom:12px; }
     .map-placeholder strong { color:#fff; font-size:20px; font-family:'Playfair Display',serif; }
 
-    <section id="admin-panel" style="background: #f8f9fa; padding: 60px 20px; border-top: 3px solid #1a3a5c;">
-  <div style="max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-    <h2 style="text-align: center; color: #1a3a5c; margin-bottom: 25px;">🚜 किसान दूध कलेक्शन एंट्री</h2>
+    <section id="admin-panel" style="background: #ffffff !important; padding: 60px 24px; border-top: 5px solid #1a3a5c; display: block !important;">
+  <div style="max-width: 900px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid #ddd;">
+    <h2 style="text-align: center; color: #1a3a5c !important; margin-bottom: 25px; font-weight: bold; font-family: sans-serif;">🚜 किसान दूध कलेक्शन एंट्री</h2>
+    
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-      <input type="text" id="admName" placeholder="किसान का नाम" style="padding:12px; border:1px solid #ccc; border-radius:5px;">
-      <input type="date" id="admDate" style="padding:12px; border:1px solid #ccc; border-radius:5px;">
-      <input type="number" id="admFat" step="0.1" placeholder="FAT %" style="padding:12px; border:1px solid #ccc; border-radius:5px;">
-      <input type="number" id="admSnf" step="0.1" placeholder="SNF %" style="padding:12px; border:1px solid #ccc; border-radius:5px;">
-      <input type="number" id="admLitre" step="0.01" placeholder="लीटर" style="padding:12px; border:1px solid #ccc; border-radius:5px;">
-      <input type="number" id="admTotal" placeholder="कुल रकम ₹" style="padding:12px; border:1px solid #ccc; border-radius:5px;">
+      <div style="display: flex; flex-direction: column;">
+        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">किसान का नाम</label>
+        <input type="text" id="admName" placeholder="नाम लिखें" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">तारीख</label>
+        <input type="date" id="admDate" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">FAT %</label>
+        <input type="number" id="admFat" step="0.1" placeholder="0.0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">SNF %</label>
+        <input type="number" id="admSnf" step="0.1" placeholder="0.0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">लीटर</label>
+        <input type="number" id="admLitre" step="0.01" placeholder="0.00" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">कुल रकम ₹</label>
+        <input type="number" id="admTotal" placeholder="0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
+      </div>
     </div>
-    <button onclick="adminSubmit()" id="saveBtn" style="width: 100%; margin-top: 30px; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">💾 डेटा शीट में सेव करें</button>
+    
+    <button onclick="adminSubmit()" id="saveBtn" style="width: 100%; margin-top: 30px; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;">
+      💾 डेटा सुरक्षित सेव करें
+    </button>
   </div>
 
-  <div style="max-width: 1100px; margin: 60px auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-    <h3 style="text-align: center; padding: 20px; background: #1a3a5c; color: white; margin: 0;">📊 लाइव कलेक्शन रिकॉर्ड लिस्ट</h3>
+  <div style="max-width: 1100px; margin: 60px auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #1a3a5c;">
+    <h3 style="text-align: center; padding: 20px; background: #1a3a5c; color: white; margin: 0; font-family: sans-serif;">📊 लाइव कलेक्शन रिकॉर्ड लिस्ट</h3>
     <div style="overflow-x: auto;">
       <table style="width: 100%; border-collapse: collapse; text-align: left;">
         <thead>
-          <tr style="background: #f1f1f1;">
-            <th style="padding: 15px;">तारीख</th>
-            <th style="padding: 15px;">नाम</th>
-            <th style="padding: 15px;">FAT/SNF</th>
-            <th style="padding: 15px;">लीटर</th>
-            <th style="padding: 15px;">कुल ₹</th>
-            <th style="padding: 15px;">ऐक्शन</th>
+          <tr style="background: #f1f1f1; border-bottom: 2px solid #1a3a5c;">
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">तारीख</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">नाम</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">FAT/SNF</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">लीटर</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">कुल ₹</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">ऐक्शन</th>
           </tr>
         </thead>
-        <tbody id="tableBodyContent"></tbody>
+        <tbody id="tableBodyContent" style="color: #000000 !important; background: #ffffff;">
+          </tbody>
       </table>
     </div>
   </div>
