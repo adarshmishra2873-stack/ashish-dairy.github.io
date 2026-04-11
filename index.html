@@ -950,16 +950,48 @@
     m.classList.toggle('open');
   }
 
-  function submitForm(){
-    const name  = document.getElementById('fname').value.trim();
+    async function submitForm() {
+    const name = document.getElementById('fname').value.trim();
     const phone = document.getElementById('fphone').value.trim();
-    if(!name || !phone){
+    const village = document.getElementById('fvillage').value.trim();
+    const milkType = document.getElementById('fmilk').value;
+    const litre = document.getElementById('flitre').value.trim();
+    const message = document.getElementById('fmsg').value.trim();
+
+    if (!name || !phone) {
       alert('कृपया नाम और मोबाइल नंबर ज़रूर भरें।');
       return;
     }
-    document.querySelector('.btn-submit').style.display='none';
-    document.getElementById('formSuccess').style.display='block';
+
+    // बटन को छुपाएं
+    document.querySelector('.btn-submit').style.display = 'none';
+
+    // आपका अपना असली Web App URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwtse4FDH-rSyaGvCxsNCfPHTRHNe7Ms0BKCuGM2s6rDHqAIrtN9kMlXQO5lO25e5fs/exec';
+
+    try {
+      const response = await fetch(scriptURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'name': name,
+          'phone': phone,
+          'village': village,
+          'milkType': milkType,
+          'litre': litre,
+          'message': message
+        })
+      });
+
+      if (response.ok) {
+        document.getElementById('formSuccess').style.display = 'block';
+      }
+    } catch (error) {
+      alert('कुछ गड़बड़ हो गई, कृपया इंटरनेट चेक करें।');
+      document.querySelector('.btn-submit').style.display = 'block';
+    }
   }
+
 
   // Intersection observer for card animations
   const cards = document.querySelectorAll('.service-card,.why-card,.testi-card,.step');
