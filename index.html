@@ -397,105 +397,46 @@
     .map-placeholder .big { font-size:60px; display:block; margin-bottom:12px; }
     .map-placeholder strong { color:#fff; font-size:20px; font-family:'Playfair Display',serif; }
 
-    <section id="admin-panel" style="background: #ffffff !important; padding: 60px 24px; border-top: 5px solid #1a3a5c; display: block !important;">
-  <div style="max-width: 900px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid #ddd;">
-    <h2 style="text-align: center; color: #1a3a5c !important; margin-bottom: 25px; font-weight: bold; font-family: sans-serif;">🚜 किसान दूध कलेक्शन एंट्री</h2>
-    
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">किसान का नाम</label>
-        <input type="text" id="admName" placeholder="नाम लिखें" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">तारीख</label>
-        <input type="date" id="admDate" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">FAT %</label>
-        <input type="number" id="admFat" step="0.1" placeholder="0.0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">SNF %</label>
-        <input type="number" id="admSnf" step="0.1" placeholder="0.0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">लीटर</label>
-        <input type="number" id="admLitre" step="0.01" placeholder="0.00" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">कुल रकम ₹</label>
-        <input type="number" id="admTotal" placeholder="0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-    </div>
-    
-    <button onclick="adminSubmit()" id="saveBtn" style="width: 100%; margin-top: 30px; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;">
-      💾 डेटा सुरक्षित सेव करें
-    </button>
-  </div>
-
-  <div style="max-width: 1100px; margin: 60px auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #1a3a5c;">
-    <h3 style="text-align: center; padding: 20px; background: #1a3a5c; color: white; margin: 0; font-family: sans-serif;">📊 लाइव कलेक्शन रिकॉर्ड लिस्ट</h3>
-    <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; text-align: left;">
-        <thead>
-          <tr style="background: #f1f1f1; border-bottom: 2px solid #1a3a5c;">
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">तारीख</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">नाम</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">FAT/SNF</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">लीटर</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">कुल ₹</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">ऐक्शन</th>
-          </tr>
-        </thead>
-        <tbody id="tableBodyContent" style="color: #000000 !important; background: #ffffff;">
-          </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
     /* ─── FOOTER ─── */
     footer {
-      footer {
-    background: #1a3a5c !important;
-    color: white !important;
+      background: #090F17;
       padding: 60px 24px 30px;
+      color: #fff;
     }
     .footer-inner { max-width:1200px; margin:0 auto; }
     .footer-top {
-      display:grid; grid-template-columns:2fr 1fr 1fr; gap:48px; margin-bottom:48px;
+      display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:48px; margin-bottom:48px;
     }
-    .footer-brand .logo-text strong { color:#fff; font-size:20px; }
-    .footer-brand .logo-text span   { color:var(--gold2); }
-    .footer-brand p { color:rgba(255,255,255,0.45); font-size:13px; margin-top:14px; line-height:1.7; }
-    .footer-col h5 { color:#fff; font-size:14px; font-weight:700; margin-bottom:14px; letter-spacing:.06em; text-transform:uppercase; }
-    .footer-col ul { list-style:none; }
-    .footer-col ul li { margin-bottom:8px; }
-    .footer-col ul li a { color:rgba(255,255,255,0.45); text-decoration:none; font-size:13px; transition:color .2s; }
+    .footer-brand .logo-text strong { color:#fff; font-size:20px; display:block; }
+    .footer-brand .logo-text span   { color:var(--gold2); font-size:11px; letter-spacing:0.08em; text-transform:uppercase;}
+    .footer-brand p { color:rgba(255,255,255,0.5); font-size:14px; margin-top:15px; line-height:1.6; }
+    .footer-col h5 { color:#fff; font-size:16px; font-weight:700; margin-bottom:15px; letter-spacing:.06em; text-transform:uppercase; }
+    .footer-col ul { list-style:none; padding:0; line-height: 2; }
+    .footer-col ul li { margin-bottom:8px; color:rgba(255,255,255,0.6); }
+    .footer-col ul li a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:14px; transition:color .2s; }
     .footer-col ul li a:hover { color:var(--gold2); }
     .footer-bottom {
       border-top:1px solid rgba(255,255,255,0.08); padding-top:24px;
       display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
     }
-    .footer-bottom p { color:rgba(255,255,255,0.3); font-size:12px; }
+    .footer-bottom p { color:rgba(255,255,255,0.4); font-size:13px; }
     .footer-bottom a { color:var(--gold2); text-decoration:none; }
+
+    /* WHATSAPP FLOATING BUTTON */
     .whatsapp-float {
       position:fixed; bottom:28px; right:28px; z-index:999;
-      width:58px; height:58px; border-radius:50%;
+      width:60px; height:60px; border-radius:50%;
       background: linear-gradient(135deg,#25D366,#128C7E);
-      display:flex; align-items:center; justify-content:center; font-size:30px;
+      display:flex; align-items:center; justify-content:center; font-size:35px;
       box-shadow:0 4px 20px rgba(37,211,102,0.5);
-      text-decoration:none;
-      animation: bounce 3s infinite;
+      text-decoration:none; color: white;
+      transition: transform 0.3s;
     }
-    @keyframes bounce {
-      0%,100%{transform:translateY(0);}
-      50%{transform:translateY(-8px);}
-    }
+    .whatsapp-float:hover { transform: scale(1.1); }
     .whatsapp-tooltip {
-      position:absolute; right:70px; top:50%; transform:translateY(-50%);
-      background:#fff; color:#128C7E; font-size:13px; font-weight:700;
-      padding:6px 12px; border-radius:20px;
+      position:absolute; right:75px; top:50%; transform:translateY(-50%);
+      background:#fff; color:#128C7E; font-size:14px; font-weight:700;
+      padding:8px 14px; border-radius:20px;
       white-space:nowrap; box-shadow:0 2px 12px rgba(0,0,0,0.15);
       opacity:0; pointer-events:none; transition:.3s;
     }
@@ -532,7 +473,7 @@
 <body>
 
 <a href="https://wa.me/919236179356" class="whatsapp-float" target="_blank">
-  📱
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 35px; height: 35px; filter: brightness(0) invert(1);">
   <span class="whatsapp-tooltip">WhatsApp करें</span>
 </a>
 
@@ -955,6 +896,63 @@
   </div>
 </div>
 
+<section id="admin-panel" style="background: #ffffff; padding: 60px 24px; border-top: 5px solid #1a3a5c;">
+  <div style="max-width: 900px; margin: 0 auto; background: #f8f9fa; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+    <h2 style="text-align: center; color: #1a3a5c; margin-bottom: 25px; font-weight: bold;">🚜 किसान दूध कलेक्शन एंट्री (Admin)</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+      <div>
+        <label style="display:block; margin-bottom:5px; font-weight:bold; color:#1a3a5c;">किसान का नाम</label>
+        <input type="text" id="admName" placeholder="नाम लिखें" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:5px;">
+      </div>
+      <div>
+        <label style="display:block; margin-bottom:5px; font-weight:bold; color:#1a3a5c;">तारीख</label>
+        <input type="date" id="admDate" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:5px;">
+      </div>
+      <div>
+        <label style="display:block; margin-bottom:5px; font-weight:bold; color:#1a3a5c;">FAT %</label>
+        <input type="number" id="admFat" step="0.1" placeholder="0.0" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:5px;">
+      </div>
+      <div>
+        <label style="display:block; margin-bottom:5px; font-weight:bold; color:#1a3a5c;">SNF %</label>
+        <input type="number" id="admSnf" step="0.1" placeholder="0.0" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:5px;">
+      </div>
+      <div>
+        <label style="display:block; margin-bottom:5px; font-weight:bold; color:#1a3a5c;">मात्रा (लीटर)</label>
+        <input type="number" id="admLitre" step="0.01" placeholder="0.00" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:5px;">
+      </div>
+      <div>
+        <label style="display:block; margin-bottom:5px; font-weight:bold; color:#1a3a5c;">कुल रकम ₹</label>
+        <input type="number" id="admTotal" placeholder="0" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:5px;">
+      </div>
+    </div>
+    
+    <button onclick="adminSubmit()" id="saveBtn" style="width: 100%; margin-top: 30px; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;">
+      💾 डेटा सुरक्षित सेव करें
+    </button>
+  </div>
+
+  <div style="max-width: 1100px; margin: 60px auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #1a3a5c;">
+    <h3 style="text-align: center; padding: 20px; background: #1a3a5c; color: white; margin: 0;">📊 लाइव कलेक्शन रिकॉर्ड लिस्ट</h3>
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 600px;">
+        <thead>
+          <tr style="background: #f1f1f1; border-bottom: 2px solid #1a3a5c;">
+            <th style="padding: 15px; color: #1a3a5c;">तारीख</th>
+            <th style="padding: 15px; color: #1a3a5c;">नाम</th>
+            <th style="padding: 15px; color: #1a3a5c;">FAT/SNF</th>
+            <th style="padding: 15px; color: #1a3a5c;">लीटर</th>
+            <th style="padding: 15px; color: #1a3a5c;">कुल ₹</th>
+            <th style="padding: 15px; color: #1a3a5c;">ऐक्शन</th>
+          </tr>
+        </thead>
+        <tbody id="tableBodyContent">
+          </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
@@ -1009,7 +1007,7 @@
     m.classList.toggle('open');
   }
 
-        async function submitForm() {
+  async function submitForm() {
     const name = document.getElementById('fname').value.trim();
     const phone = document.getElementById('fphone').value.trim();
     const village = document.getElementById('fvillage').value.trim();
@@ -1022,14 +1020,12 @@
       return;
     }
 
-    // बटन को छुपाएं
     document.querySelector('.btn-submit').style.display = 'none';
 
-    // आपका अपना असली Web App URL
+    // Contact form sheet URL (if different)
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwtse4FDH-rSyAGvCxsNCfPHTRHNe7Ms0BKCUGM2S6rDHqAlrtN9kMIXQ051O25e5fs/exec';
 
     try {
-      // ब्राउज़र का सिक्योरिटी लॉक हटाने के लिए mode: 'no-cors' लगाया है
       await fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
@@ -1044,7 +1040,6 @@
         })
       });
 
-      // सफलता का मैसेज दिखाएं
       document.getElementById('formSuccess').style.display = 'block';
       
     } catch (error) {
@@ -1052,7 +1047,6 @@
       document.querySelector('.btn-submit').style.display = 'block';
     }
   }
-
 
   // Intersection observer for card animations
   const cards = document.querySelectorAll('.service-card,.why-card,.testi-card,.step');
@@ -1090,7 +1084,7 @@
       }
   });
 
-  // GOOGLE SHEETS INTEGRATION (Fetch Farmer Records)
+  // GOOGLE SHEETS INTEGRATION (Fetch Farmer Records for Users)
   async function fetchFarmerData() {
       const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
       const resultArea = document.getElementById('resultArea');
@@ -1103,7 +1097,6 @@
           return;
       }
 
-      // Link to Google Sheets CSV
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4i-l_zaHz77hSLho42OBkWbgefC7vvl5VbityxOvE1EBpY7dQkeGRhPsiFq9HQ67u_0jHum3dBu9E/pub?output=csv";
 
       try {
@@ -1115,14 +1108,12 @@
           let recordFound = false;
           let totalAmount = 0;
 
-          // Start from i=1 to skip headings
           for(let i = 1; i < rows.length; i++) {
               const cols = rows[i].split(',');
               if(cols.length > 2) {
                   const farmerName = (cols[1] || "").trim().toLowerCase();
                   if(farmerName.includes(searchInput) && searchInput.length > 2 || farmerName === searchInput) {
                       recordFound = true;
-                      
                       const tr = document.createElement('tr');
                       tr.innerHTML = `
                           <td>${cols[2] || "-"}</td>
@@ -1152,103 +1143,98 @@
           alert("डेटा लोड करने में समस्या आ रही है। कृपया इंटरनेट चेक करें।");
       }
   }
-  // मास्टर Web App URL (Apps Script वाला लिंक)
-const masterURL = 'https://script.google.com/macros/s/AKfycbwtse4FDH-rSyaGvCxsNCfPHTRHNe7Ms0BKCuGM2s6rDHqAIrtN9kMlXQO5lO25e5fs/exec';
 
-// 1. नयी कलेक्शन एंट्री सेव करने के लिए फंक्शन
-async function adminSubmit() {
-    const btn = document.getElementById('saveBtn');
-    const params = {
-        name: document.getElementById('admName').value.trim(),
-        date: document.getElementById('admDate').value,
-        fat: document.getElementById('admFat').value,
-        snf: document.getElementById('admSnf').value,
-        litre: document.getElementById('admLitre').value,
-        total: document.getElementById('admTotal').value
-    };
+  // === ADMIN PANEL SCRIPT (Google Sheets) ===
+  const masterURL = 'https://script.google.com/macros/s/AKfycbwtse4FDH-rSyaGvCxsNCfPHTRHNe7Ms0BKCuGM2s6rDHqAIrtN9kMlXQO5lO25e5fs/exec';
 
-    if(!params.name || !params.date) {
-        alert("कृपया किसान का नाम और तारीख ज़रूर भरें!");
-        return;
-    }
+  async function adminSubmit() {
+      const btn = document.getElementById('saveBtn');
+      const params = {
+          name: document.getElementById('admName').value.trim(),
+          date: document.getElementById('admDate').value,
+          fat: document.getElementById('admFat').value,
+          snf: document.getElementById('admSnf').value,
+          litre: document.getElementById('admLitre').value,
+          total: document.getElementById('admTotal').value
+      };
 
-    btn.innerText = "सेव हो रहा है... ⏳";
-    btn.disabled = true;
+      if(!params.name || !params.date) {
+          alert("कृपया किसान का नाम और तारीख ज़रूर भरें!");
+          return;
+      }
 
-    try {
-        await fetch(masterURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: new URLSearchParams(params)
-        });
-        alert("बधाई हो! डेटा सुरक्षित सेव हो गया है।");
-        
-        // फॉर्म साफ़ करें
-        document.getElementById('admName').value = "";
-        document.getElementById('admFat').value = "";
-        document.getElementById('admSnf').value = "";
-        document.getElementById('admLitre').value = "";
-        document.getElementById('admTotal').value = "";
-        
-        loadLiveRecords(); // लिस्ट अपडेट करें
-    } catch (e) {
-        alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।");
-    } finally {
-        btn.innerText = "💾 डेटा शीट में सेव करें";
-        btn.disabled = false;
-    }
-}
+      btn.innerText = "सेव हो रहा है... ⏳";
+      btn.disabled = true;
 
-// 2. रिकॉर्ड डिलीट करने के लिए फंक्शन
-async function deleteRow(index) {
-    if(!confirm("क्या आप वाकई इस रिकॉर्ड को मिटाना चाहते हैं?")) return;
+      try {
+          await fetch(masterURL, {
+              method: 'POST',
+              mode: 'no-cors',
+              body: new URLSearchParams(params)
+          });
+          alert("बधाई हो! डेटा सुरक्षित सेव हो गया है।");
+          
+          document.getElementById('admName').value = "";
+          document.getElementById('admFat').value = "";
+          document.getElementById('admSnf').value = "";
+          document.getElementById('admLitre').value = "";
+          document.getElementById('admTotal').value = "";
+          
+          loadLiveRecords();
+      } catch (e) {
+          alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।");
+      } finally {
+          btn.innerText = "💾 डेटा सुरक्षित सेव करें";
+          btn.disabled = false;
+      }
+  }
 
-    try {
-        await fetch(masterURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: new URLSearchParams({action: "delete", rowIndex: index})
-        });
-        alert("रिकॉर्ड सफलतापूर्वक हटा दिया गया!");
-        loadLiveRecords(); // लिस्ट रिफ्रेश करें
-    } catch (e) {
-        alert("मिटाने में समस्या आई, इंटरनेट चेक करें।");
-    }
-}
+  async function deleteRow(index) {
+      if(!confirm("क्या आप वाकई इस रिकॉर्ड को मिटाना चाहते हैं?")) return;
 
-// 3. शीट से सारा डेटा लाकर टेबल में दिखाने के लिए फंक्शन
-async function loadLiveRecords() {
-    const tableBody = document.getElementById('tableBodyContent');
-    tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:20px;'>डेटा लोड हो रहा है... ⏳</td></tr>";
+      try {
+          await fetch(masterURL, {
+              method: 'POST',
+              mode: 'no-cors',
+              body: new URLSearchParams({action: "delete", rowIndex: index})
+          });
+          alert("रिकॉर्ड सफलतापूर्वक हटा दिया गया!");
+          loadLiveRecords();
+      } catch (e) {
+          alert("मिटाने में समस्या आई, इंटरनेट चेक करें।");
+      }
+  }
 
-    try {
-        const response = await fetch(masterURL);
-        const data = await response.json();
-        
-        tableBody.innerHTML = ""; 
-        // i=1 क्योंकि पहली लाइन हेडिंग (Header) होती है
-        for (let i = 1; i < data.length; i++) {
-            const row = data[i];
-            tableBody.innerHTML += `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 12px;">${row[0] || '-'}</td>
-                    <td style="padding: 12px; font-weight:bold;">${row[1] || '-'}</td>
-                    <td style="padding: 12px;">${row[2]} / ${row[3]}</td>
-                    <td style="padding: 12px;">${row[4]} L</td>
-                    <td style="padding: 12px; color: #28a745; font-weight:bold;">₹ ${row[5]}</td>
-                    <td style="padding: 12px; text-align:center;">
-                        <button onclick="deleteRow(${i})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button>
-                    </td>
-                </tr>
-            `;
-        }
-    } catch (e) {
-        tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center; color:red; padding:20px;'>रिकॉर्ड लोड नहीं हो सके।</td></tr>";
-    }
-}
+  async function loadLiveRecords() {
+      const tableBody = document.getElementById('tableBodyContent');
+      tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:20px;'>डेटा लोड हो रहा है... ⏳</td></tr>";
 
-// पेज लोड होते ही लिस्ट अपने आप दिख जाए
-window.addEventListener('DOMContentLoaded', loadLiveRecords);
+      try {
+          const response = await fetch(masterURL);
+          const data = await response.json();
+          
+          tableBody.innerHTML = ""; 
+          for (let i = 1; i < data.length; i++) {
+              const row = data[i];
+              tableBody.innerHTML += `
+                  <tr style="border-bottom: 1px solid #eee;">
+                      <td style="padding: 12px;">${row[0] || '-'}</td>
+                      <td style="padding: 12px; font-weight:bold;">${row[1] || '-'}</td>
+                      <td style="padding: 12px;">${row[2]} / ${row[3]}</td>
+                      <td style="padding: 12px;">${row[4]} L</td>
+                      <td style="padding: 12px; color: #28a745; font-weight:bold;">₹ ${row[5]}</td>
+                      <td style="padding: 12px; text-align:center;">
+                          <button onclick="deleteRow(${i})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button>
+                      </td>
+                  </tr>
+              `;
+          }
+      } catch (e) {
+          tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center; color:red; padding:20px;'>रिकॉर्ड लोड नहीं हो सके।</td></tr>";
+      }
+  }
+
+  window.addEventListener('DOMContentLoaded', loadLiveRecords);
 
 </script>
 </body>
