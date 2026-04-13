@@ -647,7 +647,7 @@
     <div class="service-card">
       <div class="svc-icon">📱</div>
       <h3 class="svc-title">WhatsApp अपडेट</h3>
-      <p class="svc-desc">रोज़ का रेट, मासिक हिसाब और किसी भी जानकारी के लिए WhatsApp ग्रुप में जोड़ा जाएगा। हमेशा कनेक्टेड रहें।</p>
+      <p class="svc-desc">रोज़ का रेट, मासिक हिसाब और किसी भी जानकारी के लिए WhatsApp গ্রুপের में जोड़ा जाएगा। हमेशा कनेक्टेड रहें।</p>
     </div>
   </div>
 </section>
@@ -1139,7 +1139,6 @@
                     let dateStr = r[0] || "-";
                     let shiftStr = "-";
                     
-                    // अगर तारीख में 'शिफ्ट' जुड़ा हुआ है (Smart Split)
                     if(typeof dateStr === 'string') {
                         if(dateStr.includes(' | ')) {
                             const parts = dateStr.split(' | ');
@@ -1148,6 +1147,12 @@
                         }
                         if(dateStr.includes('T')) {
                             dateStr = dateStr.split('T')[0]; 
+                        }
+                        
+                        // YYYY-MM-DD को DD-MM-YYYY बनाने का कोड
+                        let dParts1 = dateStr.split('-');
+                        if(dParts1.length === 3 && dParts1[0].length === 4) {
+                            dateStr = dParts1[2] + "-" + dParts1[1] + "-" + dParts1[0];
                         }
                     }
                     
@@ -1188,7 +1193,7 @@
       
       const rawDate = document.getElementById('admDate').value;
       const shiftVal = document.getElementById('admShift').value;
-      const combinedDate = rawDate + " | " + shiftVal; // तारीख और शिफ्ट एक साथ जोड़ रहे हैं
+      const combinedDate = rawDate + " | " + shiftVal;
 
       const params = {
           name: document.getElementById('admName').value.trim(),
@@ -1216,7 +1221,7 @@
           alert("बधाई हो! डेटा सुरक्षित सेव हो गया है।");
           
           document.getElementById('admName').value = "";
-          document.getElementById('admShift').value = "सुबह"; // डिफ़ॉल्ट सुबह कर दें
+          document.getElementById('admShift').value = "सुबह";
           document.getElementById('admFat').value = "";
           document.getElementById('admSnf').value = "";
           document.getElementById('admLitre').value = "";
@@ -1272,6 +1277,12 @@
                   if(dateStr.includes('T')) {
                       dateStr = dateStr.split('T')[0];
                   }
+                  
+                  // YYYY-MM-DD को DD-MM-YYYY बनाने का कोड
+                  let dParts2 = dateStr.split('-');
+                  if(dParts2.length === 3 && dParts2[0].length === 4) {
+                      dateStr = dParts2[2] + "-" + dParts2[1] + "-" + dParts2[0];
+                  }
               }
               
               tableBody.innerHTML += `
@@ -1307,3 +1318,4 @@
 </script>
 </body>
 </html>
+
