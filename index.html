@@ -425,10 +425,10 @@
       <div class="svc-icon">🥛</div><h3 class="svc-title">दूध खरीदी</h3><p class="svc-desc">गाय और भैंस दोनों का दूध खरीदते हैं। रोज़ सुबह और शाम — दोनों टाइम कलेक्शन होता है। बाजार से बेहतर दाम की गारंटी।</p>
     </div>
     <div class="service-card">
-      <div class="svc-icon">🔬</div><h3 class="svc-title">क्वालिटी टेस्टिंग</h3><p class="svc-desc">आधुनिक मशीनों से फैट और SNF की जांच। हर दूध का डिजिटल रिकॉर्ड রাখা जाता है — पूरी पारदर्शिता के साथ।</p>
+      <div class="svc-icon">🔬</div><h3 class="svc-title">क्वालिटी टेस्टिंग</h3><p class="svc-desc">आधुनिक मशीनों से फैट और SNF की जांच। हर दूध का डिजिटल रिकॉर्ड रखा जाता है — पूरी पारदर्शिता के साथ।</p>
     </div>
     <div class="service-card">
-      <div class="svc-icon">💰</div><h3 class="svc-title">तुरंत भुगतान</h3><p class="svc-desc">दूध जमा करते ही पैसे मिलते हैं। UPI, केष, या बैंक ट्रांसफर — आपकी सुविधा अनुसार। हर 10 दिन में खाते में पैसे।</p>
+      <div class="svc-icon">💰</div><h3 class="svc-title">तुरंत भुगतान</h3><p class="svc-desc">दूध जमा करते ही पैसे मिलते हैं। UPI, कैश, या बैंक ट्रांसफर — आपकी सुविधा अनुसार। हर 10 दिन में खाते में पैसे।</p>
     </div>
     <div class="service-card">
       <div class="svc-icon">📊</div><h3 class="svc-title">डिजिटल पर्ची</h3><p class="svc-desc">हर बार दूध जमा करने पर ऑनलाइन रिकॉर्ड रहता है जिसे आप वेबसाइट पर अपने नाम से देख सकते हैं।</p>
@@ -657,7 +657,7 @@
 
 <script>
   // ==========================================
-  // 👇 आपकी OpenRouter की नई API KEY 👇
+  // 👇 आपकी OpenRouter की चाबी (सेट की हुई) 👇
   // ==========================================
   
   const p1 = 'sk-or-v1-be28b63cd6dcc6db4ee0d4a';
@@ -708,7 +708,7 @@
       chatBody.scrollTop = chatBody.scrollHeight;
       
       try {
-          const sysPrompt = "You are an expert AI Veterinary Doctor for 'Ashish Mishra Milk Center'. Your job is to help farmers with cattle (cow/buffalo) health, diseases, and increasing milk production. You MUST reply ONLY in simple, clear Hindi (Devanagari script) or Hinglish. Keep answers short, respectful, and highly accurate. Note: If the user writes 'Gay', they mean 'Cow' (गाय).";
+          const sysPrompt = "You are an expert AI Veterinary Doctor for 'Ashish Mishra Milk Center'. Your job is to help farmers with cattle (cow/buffalo) health, diseases, and increasing milk production. You MUST reply ONLY in simple, clear Hindi or Hinglish. Note: If the user writes 'Gay', they mean 'Cow' (गाय). Keep answers short and practical.";
           
           const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
               method: 'POST',
@@ -718,7 +718,7 @@
                   'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                  model: "google/gemini-flash-1.5-8b:free",
+                  model: "mistralai/pixtral-12b:free",
                   messages: [
                       { role: "system", content: sysPrompt },
                       { role: "user", content: text }
@@ -729,8 +729,7 @@
           const result = await response.json();
           
           if(result.error) {
-              console.error("API Error:", result.error);
-              document.getElementById(aiThinkingId).innerHTML = `<span style="color:#D32F2F; font-weight:bold;">API Error:</span><br><span style="font-size:12px;">${result.error.message}</span>`;
+              document.getElementById(aiThinkingId).innerHTML = `<span style="color:red;">Error: Server Busy. Please try again.</span>`;
               return;
           }
 
@@ -742,7 +741,7 @@
                document.getElementById(aiThinkingId).innerText = "माफ़ करना किसान भाई, मुझे यह सवाल ठीक से समझ नहीं आया।";
           }
       } catch(e) {
-          document.getElementById(aiThinkingId).innerText = "माफ़ करना, नेटवर्क में दिक्कत है। कृपया इंटरनेट चेक करें।";
+          document.getElementById(aiThinkingId).innerText = "नेटवर्क में दिक्कत है। कृपया इंटरनेट चेक करें।";
       }
       chatBody.scrollTop = chatBody.scrollHeight;
   }
@@ -766,11 +765,12 @@
       });
       document.getElementById('formSuccess').style.display = 'block';
     } catch (error) {
-      alert('कुछ गड़बड़ हो गई, कृपया इंटरनेट चेक करें।');
+      alert('कुछ गड़बड़ हो गई।');
       document.querySelector('.btn-submit').style.display = 'block';
     }
   }
 
+  // Animation Observer
   const cards = document.querySelectorAll('.service-card,.why-card,.testi-card,.step');
   const io = new IntersectionObserver((entries)=>{
     entries.forEach((e,i)=>{
@@ -778,17 +778,6 @@
     });
   },{threshold:0.15});
   cards.forEach(c=>{ c.style.opacity='0'; c.style.transform='translateY(28px)'; c.style.transition='opacity .5s ease, transform .5s ease, box-shadow .3s'; io.observe(c); });
-
-  document.addEventListener('DOMContentLoaded', () => {
-      if(typeof siteData !== 'undefined') {
-          document.getElementById('rate-cow-std').innerText = siteData.rates.cowStandard;
-          document.getElementById('rate-cow-prm').innerText = siteData.rates.cowPremium;
-          document.getElementById('rate-buf-std').innerText = siteData.rates.buffaloStandard;
-          document.getElementById('rate-buf-prm').innerText = siteData.rates.buffaloPremium;
-          document.getElementById('rate-mix').innerText = siteData.rates.mixed;
-          document.getElementById('dynamic-ticker').innerHTML = `<span>${siteData.tickerMessage}</span><span>${siteData.tickerMessage}</span><span>${siteData.tickerMessage}</span><span>${siteData.tickerMessage}</span>`;
-      }
-  });
 
   // === 3. किसान का हिसाब खोजना ===
   async function fetchFarmerData() {
@@ -812,17 +801,11 @@
             const r = data[i];
             if(r.length > 1) {
                 const farmerName = (r[1] || "").toString().trim().toLowerCase();
-                if(farmerName.includes(searchInput) && searchInput.length > 2 || farmerName === searchInput) {
+                if(farmerName.includes(searchInput)) {
                     recordFound = true;
-                    let dateStr = r[0] || "-", shiftStr = "-";
-                    if(typeof dateStr === 'string') {
-                        if(dateStr.includes(' | ')) { const parts = dateStr.split(' | '); dateStr = parts[0]; shiftStr = parts[1]; }
-                        if(dateStr.includes('T')) { dateStr = dateStr.split('T')[0]; }
-                        let dParts1 = dateStr.split('-');
-                        if(dParts1.length === 3 && dParts1[0].length === 4) { dateStr = dParts1[2] + "-" + dParts1[1] + "-" + dParts1[0]; }
-                    }
+                    let dateStr = r[0] || "-";
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${dateStr}</td><td style="text-align:center; font-weight:bold; color: #2C5F8A;">${shiftStr}</td><td>${r[4] || "0"} L</td><td>${r[2] || "-"}</td><td>${r[3] || "-"}</td><td style="font-weight:bold; color: #28a745;">₹ ${r[5] || "0"}</td>`;
+                    tr.innerHTML = `<td>${dateStr}</td><td>-</td><td>${r[4] || "0"} L</td><td>${r[2] || "-"}</td><td>${r[3] || "-"}</td><td style="font-weight:bold; color: #28a745;">₹ ${r[5] || "0"}</td>`;
                     recordBody.appendChild(tr);
                     totalAmount += parseFloat(r[5]) || 0;
                 }
@@ -830,109 +813,82 @@
         }
         if(recordFound) { errorMsg.style.display = "none"; resultArea.style.display = "block"; totalSumText.innerText = `कुल जमा राशि: ₹ ${totalAmount.toFixed(2)}`; } 
         else { resultArea.style.display = "none"; errorMsg.style.display = "block"; }
-    } catch(error) { alert("डेटा लोड करने में समस्या आ रही है। कृपया इंटरनेट चेक करें।"); resultArea.style.display = "none"; }
+    } catch(error) { alert("डेटा लोड करने में समस्या।"); resultArea.style.display = "none"; }
   }
 
-  // === 4. एडमिन का काम (नया डेटा डालना) ===
+  // === 4. एडमिन सेव ===
   async function adminSubmit() {
       const btn = document.getElementById('saveBtn');
       const rawDate = document.getElementById('admDate').value;
       const shiftVal = document.getElementById('admShift').value;
-      const combinedDate = rawDate + " | " + shiftVal;
+      const params = { name: document.getElementById('admName').value.trim(), date: rawDate + " | " + shiftVal, fat: document.getElementById('admFat').value, snf: document.getElementById('admSnf').value, litre: document.getElementById('admLitre').value, total: document.getElementById('admTotal').value };
 
-      const params = { name: document.getElementById('admName').value.trim(), date: combinedDate, fat: document.getElementById('admFat').value, snf: document.getElementById('admSnf').value, litre: document.getElementById('admLitre').value, total: document.getElementById('admTotal').value };
-
-      if(!document.getElementById('admName').value.trim() || !rawDate) { alert("कृपया किसान का नाम और तारीख ज़रूर भरें!"); return; }
+      if(!params.name || !rawDate) { alert("नाम और तारीख भरें!"); return; }
       btn.innerText = "सेव हो रहा है... ⏳"; btn.disabled = true;
 
       try {
           await fetch(masterURL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(params) });
-          alert("बधाई हो! डेटा सुरक्षित सेव हो गया है।");
-          document.getElementById('admName').value = ""; document.getElementById('admShift').value = "सुबह"; document.getElementById('admFat').value = ""; document.getElementById('admSnf').value = ""; document.getElementById('admLitre').value = ""; document.getElementById('admTotal').value = "";
+          alert("सेव हो गया!");
           loadLiveRecords(); 
-      } catch (e) { alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।"); } 
+      } catch (e) { alert("इंटरनेट एरर।"); } 
       finally { btn.innerText = "💾 डेटा सुरक्षित सेव करें"; btn.disabled = false; }
   }
 
-  // === 5. एडमिन का काम (डेटा मिटाना) ===
-  async function deleteRow(index) {
-      if(!confirm("क्या आप वाकई इस रिकॉर्ड को मिटाना चाहते हैं?")) return;
-      try { await fetch(masterURL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({action: "delete", rowIndex: index}) }); alert("रिकॉर्ड सफलतापूर्वक हटा दिया गया!"); loadLiveRecords(); } 
-      catch (e) { alert("मिटाने में समस्या आई, इंटरनेट चेक करें।"); }
-  }
-
-  // === 6. एडमिन पैनल में डेटा दिखाना ===
+  // === 5. लाइव रिकॉर्ड लोड ===
   async function loadLiveRecords() {
       const tableBody = document.getElementById('tableBodyContent');
-      tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px;'>डेटा लोड हो रहा है... ⏳</td></tr>";
-
+      tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center;'>लोड हो रहा है... ⏳</td></tr>";
       try {
           const response = await fetch(masterURL);
           const data = await response.json();
           tableBody.innerHTML = ""; 
           for (let i = 1; i < data.length; i++) {
               const row = data[i];
-              let dateStr = row[0] || "-", shiftStr = "-";
-              if(typeof dateStr === 'string') {
-                  if(dateStr.includes(' | ')) { const parts = dateStr.split(' | '); dateStr = parts[0]; shiftStr = parts[1]; }
-                  if(dateStr.includes('T')) { dateStr = dateStr.split('T')[0]; }
-                  let dParts2 = dateStr.split('-'); if(dParts2.length === 3 && dParts2[0].length === 4) { dateStr = dParts2[2] + "-" + dParts2[1] + "-" + dParts2[0]; }
-              }
-              tableBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;"><td style="padding: 12px;">${dateStr}</td><td style="padding: 12px; color: #2C5F8A; font-weight:bold;">${shiftStr}</td><td style="padding: 12px; font-weight:bold;">${row[1] || '-'}</td><td style="padding: 12px;">${row[2]} / ${row[3]}</td><td style="padding: 12px;">${row[4]} L</td><td style="padding: 12px; color: #28a745; font-weight:bold;">₹ ${row[5]}</td><td style="padding: 12px; text-align:center;"><button onclick="deleteRow(${i})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button></td></tr>`;
+              tableBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;"><td style="padding: 12px;">${row[0]}</td><td style="padding: 12px; font-weight:bold;">${row[1]}</td><td style="padding: 12px;">${row[2]}/${row[3]}</td><td style="padding: 12px;">${row[4]} L</td><td style="padding: 12px; color: #28a745; font-weight:bold;">₹ ${row[5]}</td></tr>`;
           }
-      } catch (e) { tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center; color:red; padding:20px;'>रिकॉर्ड लोड नहीं हो सके।</td></tr>"; }
+      } catch (e) { tableBody.innerHTML = "Error loading data."; }
   }
 
-  // === 7. SECRET ADMIN LOGIN (Ad29) ===
   function openAdmin(){
-      var p = prompt("Admin Security PIN Dalein:");
-      if(p === "Ad29"){ document.getElementById('admin-panel').style.display = 'block'; window.location.href = '#admin-panel'; loadLiveRecords(); } 
-      else if(p !== null){ alert("Galat Password!"); }
+      var p = prompt("Admin PIN:");
+      if(p === "Ad29"){ document.getElementById('admin-panel').style.display = 'block'; loadLiveRecords(); } 
   }
 
-  // === 8. AI PARCHI SCANNER (OPENROUTER VISION) ===
+  // === 6. AI पर्ची स्कैन (Mistral Pixtral) ===
   async function readParchiWithAI() {
       const fileInput = document.getElementById('parchiImage');
       const aiBtn = document.getElementById('aiBtn');
-      if(!fileInput.files[0]) { alert("भाई, पहले पर्ची की फोटो तो चुनें! 📸"); return; }
+      if(!fileInput.files[0]) { alert("पर्ची चुनें!"); return; }
       
-      aiBtn.innerText = "पर्ची पढ़ रहा हूँ... कृपया रुकें ⏳"; aiBtn.disabled = true;
-
+      aiBtn.innerText = "पढ़ रहा हूँ... ⏳"; aiBtn.disabled = true;
       const file = fileInput.files[0];
       const reader = new FileReader();
 
       reader.onloadend = async function() {
           const base64Data = reader.result.split(',')[1];
-          const promptText = `Analyze this milk collection receipt (parchi). Extract the following details and return ONLY a valid JSON object without any markdown formatting or code blocks. Fields: - name: Farmer's name (string, translate to English if in Hindi) - fat: FAT percentage (number) - snf: SNF percentage (number) - litre: Quantity in litres (number) - total: Total amount in rupees (number). Example format: {"name": "ADARSH KUMAR MISHRA", "fat": 6.5, "snf": 8.5, "litre": 5.2, "total": 200}`;
+          const promptText = `Analyze this receipt. Return ONLY JSON: {"name": "STRING", "fat": NUMBER, "snf": NUMBER, "litre": NUMBER, "total": NUMBER}`;
 
           try {
               const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                   method: 'POST',
                   headers: {
                       'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                      'HTTP-Referer': 'https://adarshmishra2873-stack.github.io',
                       'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({
-                      model: "google/gemini-flash-1.5-8b:free",
-                      messages: [
-                          {
-                              role: "user",
-                              content: [
-                                  { type: "text", text: promptText },
-                                  { type: "image_url", image_url: { url: `data:${file.type};base64,${base64Data}` } }
-                              ]
-                          }
-                      ]
+                      model: "mistralai/pixtral-12b:free",
+                      messages: [{
+                          role: "user",
+                          content: [
+                              { type: "text", text: promptText },
+                              { type: "image_url", image_url: { url: `data:${file.type};base64,${base64Data}` } }
+                          ]
+                      }]
                   })
               });
-
               const result = await response.json();
-              if(result.error) { alert("OpenRouter API Error: " + result.error.message); return; }
-
               let aiText = result.choices[0].message.content;
-              aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
-              const extractedData = JSON.parse(aiText);
+              const extractedData = JSON.parse(aiText.replace(/```json|```/g, '').trim());
 
               if(extractedData.name) document.getElementById('admName').value = extractedData.name;
               if(extractedData.fat) document.getElementById('admFat').value = extractedData.fat;
@@ -940,8 +896,8 @@
               if(extractedData.litre) document.getElementById('admLitre').value = extractedData.litre;
               if(extractedData.total) document.getElementById('admTotal').value = extractedData.total;
 
-              alert("✅ पर्ची स्कैन हो गई! कृपया एक बार डेटा चेक करें और 'डेटा सुरक्षित सेव करें' बटन दबाएं।");
-          } catch(e) { alert("स्कैन करने में समस्या आई। फोटो साफ़ खींचें या इंटरनेट चेक करें।"); } 
+              alert("स्कैन हो गया!");
+          } catch(e) { alert("फोटो साफ़ खींचें।"); } 
           finally { aiBtn.innerText = "📸 पर्ची स्कैन करें"; aiBtn.disabled = false; }
       };
       reader.readAsDataURL(file);
@@ -949,4 +905,3 @@
 </script>
 </body>
 </html>
-
