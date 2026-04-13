@@ -83,7 +83,7 @@
     .stat-lbl { color:rgba(255,255,255,0.55); font-size:12px; margin-top:2px; letter-spacing:.05em; }
 
     .hero-visual { display:flex; justify-content:center; align-items:center; animation: fadeUp .8s .3s ease both; }
-    .milk-can-card { background: rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius: 24px; padding: 20px; text-align:center; backdrop-filter:blur(12px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .milk-can-card { background: rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius: 24px; padding: 20px; text-align:center; backdrop-filter:blur(12px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); position:relative; overflow:hidden; }
     .milk-can-card img { width: 100%; border-radius: 16px; border: 3px solid var(--gold); display: block; object-fit: cover; }
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to   { opacity:1; transform:translateY(0); } }
@@ -95,7 +95,7 @@
     .section-title { font-family:'Playfair Display',serif; font-size: clamp(28px,4vw,44px); color:var(--blue); font-weight:900; line-height:1.15; }
     .section-desc { color:var(--muted); font-size:16px; max-width:560px; margin:12px auto 0; line-height:1.7; }
 
-    /* ─── TICKER ─── */
+    /* ─── MARQUEE TICKER ─── */
     .ticker { background: var(--blue); color: var(--gold2); padding: 14px 0; overflow:hidden; white-space:nowrap; }
     .ticker-inner { display:inline-block; animation: ticker 28s linear infinite; font-size:14px; font-weight:600; letter-spacing:.06em; }
     .ticker-inner span { margin: 0 40px; }
@@ -175,9 +175,11 @@
     .form-group { margin-bottom:18px; }
     .form-group label { display:block; font-size:13px; font-weight:600; color:var(--blue); margin-bottom:6px; }
     .form-group input, .form-group textarea, .form-group select { width:100%; padding:12px 16px; border:1.5px solid var(--border); border-radius:10px; font-size:14px; font-family:inherit; background:#FAFAF8; outline:none; color:var(--text); }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--blue2); box-shadow:0 0 0 3px rgba(44,95,138,0.12); }
     .form-group textarea { resize:vertical; min-height:100px; }
     .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
     .btn-submit { width:100%; padding:14px; background: linear-gradient(135deg,var(--blue),var(--blue2)); color:#fff; font-weight:700; font-size:16px; border:none; border-radius:12px; cursor:pointer; box-shadow:0 4px 16px rgba(26,58,92,0.25); font-family:inherit; }
+    .btn-submit:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(26,58,92,0.35); }
     .form-success { display:none; text-align:center; padding:20px; color:var(--green); font-weight:700; font-size:16px; }
 
     /* ─── MAP ─── */
@@ -210,16 +212,14 @@
       width:58px; height:58px; border-radius:50%;
       background: linear-gradient(135deg,#25D366,#128C7E);
       display:flex; align-items:center; justify-content:center; font-size:30px;
-      box-shadow:0 4px 20px rgba(37,211,102,0.5); text-decoration:none;
-      animation: bounce 3s infinite;
+      box-shadow:0 4px 20px rgba(37,211,102,0.5); text-decoration:none; animation: bounce 3s infinite;
     }
     @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
-    
     .whatsapp-tooltip {
       position:absolute; right:70px; top:50%; transform:translateY(-50%);
       background:#fff; color:#128C7E; font-size:13px; font-weight:700;
-      padding:6px 12px; border-radius:20px; white-space:nowrap; 
-      box-shadow:0 2px 12px rgba(0,0,0,0.15); opacity:0; pointer-events:none; transition:.3s;
+      padding:6px 12px; border-radius:20px; white-space:nowrap; box-shadow:0 2px 12px rgba(0,0,0,0.15);
+      opacity:0; pointer-events:none; transition:.3s;
     }
     .whatsapp-float:hover .whatsapp-tooltip{ opacity:1; }
 
@@ -238,30 +238,25 @@
       position:fixed; bottom:170px; right:28px; 
       width:340px; max-width:90vw; height:450px; 
       background:#fff; border-radius:15px; box-shadow:0 10px 40px rgba(0,0,0,0.3); 
-      z-index:1000; display:none; flex-direction:column; overflow:hidden; 
-      border:2px solid var(--gold); 
+      z-index:1000; display:none; flex-direction:column; overflow:hidden; border:2px solid var(--gold); 
     }
     .ai-chat-header { 
       background:linear-gradient(135deg,var(--blue),var(--blue2)); 
       color:#fff; padding:15px; font-weight:bold; display:flex; justify-content:space-between; 
       align-items:center; font-family:'Playfair Display',serif; font-size:18px;
     }
-    .ai-chat-body { 
-      flex:1; padding:15px; overflow-y:auto; background:#f4f7f6; 
-      display:flex; flex-direction:column; gap:12px; 
-    }
-    .ai-chat-input { 
-      display:flex; border-top:1px solid #ddd; padding:10px; background:#fff; align-items:center; 
-    }
-    .ai-chat-input input { 
-      flex:1; padding:12px; border:1px solid #ccc; border-radius:20px; outline:none; font-size:14px; 
-    }
+    .ai-chat-body { flex:1; padding:15px; overflow-y:auto; background:#f4f7f6; display:flex; flex-direction:column; gap:12px; }
+    .ai-chat-input { display:flex; border-top:1px solid #ddd; padding:10px; background:#fff; align-items:center; }
+    .ai-chat-input input { flex:1; padding:12px; border:1px solid #ccc; border-radius:20px; outline:none; font-size:14px; }
+    
+    /* MIC BUTTON STYLE */
     .ai-chat-input .mic-btn { 
       background:#EBF5FB; border:none; width:40px; height:40px; border-radius:50%; 
       margin-left:5px; cursor:pointer; font-size:18px; color:var(--blue); 
       display:flex; align-items:center; justify-content:center; transition:0.2s;
     }
     .ai-chat-input .mic-btn:active { transform:scale(0.9); background:#d0e7f7; }
+    
     .ai-chat-input .send-btn { 
       background:var(--gold); border:none; width:40px; height:40px; border-radius:50%; 
       margin-left:5px; cursor:pointer; font-size:18px; color:var(--blue); 
@@ -282,15 +277,8 @@
       .step:not(:last-child)::after{ display:none; }
       .nav-links { display:none; }
       .hamburger { display:flex; }
-      .mobile-menu.open {
-        display:flex; flex-direction:column; gap:4px;
-        position:absolute; top:70px; left:0; right:0;
-        background:var(--blue); padding:16px 24px; z-index:99;
-      }
-      .mobile-menu a {
-        color:rgba(255,255,255,0.85); text-decoration:none; padding:12px 0;
-        border-bottom:1px solid rgba(255,255,255,0.08); font-size:15px;
-      }
+      .mobile-menu.open { display:flex; flex-direction:column; gap:4px; position:absolute; top:70px; left:0; right:0; background:var(--blue); padding:16px 24px; z-index:99; }
+      .mobile-menu a { color:rgba(255,255,255,0.85); text-decoration:none; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08); font-size:15px; }
       .form-row { grid-template-columns:1fr; }
       .record-search-box { flex-direction: column; }
     }
@@ -373,32 +361,16 @@
   <div class="hero-inner">
     <div class="hero-content">
       <div class="hero-badge">🏅 ग्राम नाहिल का विश्वसनीय केंद्र</div>
-      <h1 class="hero-title">
-        नाहिल<br>
-        <span>मिल्क कलेक्शन</span><br>
-        सेंटर
-      </h1>
-      <p class="hero-sub">
-        आपके घर का ताजा दूध, हमारे यहाँ सबसे अच्छे दाम पर।<br>
-        आशीष मिश्रा द्वारा संचालित — ईमानदारी और पारदर्शिता के साथ।
-      </p>
+      <h1 class="hero-title">नाहिल<br><span>मिल्क कलेक्शन</span><br>सेंटर</h1>
+      <p class="hero-sub">आपके घर का ताजा दूध, हमारे यहाँ सबसे अच्छे दाम पर।<br>आशीष मिश्रा द्वारा संचालित — ईमानदारी और पारदर्शिता के साथ।</p>
       <div class="hero-btns">
         <a href="#record" class="btn-primary">📝 अपना हिसाब देखें</a>
         <a href="#rates" class="btn-outline">💰 आज का रेट देखें</a>
       </div>
       <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-num">50+</div>
-          <div class="stat-lbl">किसान जुड़े हैं</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">50+L</div>
-          <div class="stat-lbl">रोज़ाना कलेक्शन</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">2+</div>
-          <div class="stat-lbl">वर्षों का अनुभव</div>
-        </div>
+        <div class="stat"><div class="stat-num">50+</div><div class="stat-lbl">किसान जुड़े हैं</div></div>
+        <div class="stat"><div class="stat-num">50+L</div><div class="stat-lbl">रोज़ाना कलेक्शन</div></div>
+        <div class="stat"><div class="stat-num">2+</div><div class="stat-lbl">वर्षों का अनुभव</div></div>
       </div>
     </div>
     
@@ -431,17 +403,9 @@
     <div class="table-responsive">
       <table class="rates-table">
         <thead>
-          <tr>
-            <th>तारीख</th>
-            <th>शिफ्ट</th>
-            <th>दूध (Litre)</th>
-            <th>FAT %</th>
-            <th>SNF %</th>
-            <th>कुल रकम</th>
-          </tr>
+          <tr><th>तारीख</th><th>शिफ्ट</th><th>दूध (Litre)</th><th>FAT %</th><th>SNF %</th><th>कुल रकम</th></tr>
         </thead>
-        <tbody id="recordBody">
-          </tbody>
+        <tbody id="recordBody"></tbody>
       </table>
     </div>
     <h3 id="totalSumText" style="text-align: center; color: var(--blue); margin-top: 20px; background: var(--gold); padding: 12px; border-radius: 12px; max-width: 350px; margin-left: auto; margin-right: auto; box-shadow: var(--shadow);"></h3>
@@ -458,34 +422,22 @@
   </div>
   <div class="services-grid">
     <div class="service-card">
-      <div class="svc-icon">🥛</div>
-      <h3 class="svc-title">दूध खरीदी</h3>
-      <p class="svc-desc">गाय और भैंस दोनों का दूध खरीदते हैं। रोज़ सुबह और शाम — दोनों टाइम कलेक्शन होता है। बाजार से बेहतर दाम की गारंटी।</p>
+      <div class="svc-icon">🥛</div><h3 class="svc-title">दूध खरीदी</h3><p class="svc-desc">गाय और भैंस दोनों का दूध खरीदते हैं। रोज़ सुबह और शाम — दोनों टाइम कलेक्शन होता है। बाजार से बेहतर दाम की गारंटी।</p>
     </div>
     <div class="service-card">
-      <div class="svc-icon">🔬</div>
-      <h3 class="svc-title">क्वालिटी टेस्टिंग</h3>
-      <p class="svc-desc">आधुनिक मशीनों से फैट और SNF की जांच। हर दूध का डिजिटल रिकॉर्ड रखा जाता है — पूरी पारदर्शिता के साथ।</p>
+      <div class="svc-icon">🔬</div><h3 class="svc-title">क्वालिटी टेस्टिंग</h3><p class="svc-desc">आधुनिक मशीनों से फैट और SNF की जांच। हर दूध का डिजिटल रिकॉर्ड रखा जाता है — पूरी पारदर्शिता के साथ।</p>
     </div>
     <div class="service-card">
-      <div class="svc-icon">💰</div>
-      <h3 class="svc-title">तुरंत भुगतान</h3>
-      <p class="svc-desc">दूध जमा करते ही पैसे मिलते हैं। UPI, कैश, या बैंक ट्रांसफर — आपकी सुविधा अनुसार। हर 10 दिन में खाते में पैसे।</p>
+      <div class="svc-icon">💰</div><h3 class="svc-title">तुरंत भुगतान</h3><p class="svc-desc">दूध जमा करते ही पैसे मिलते हैं। UPI, कैश, या बैंक ट्रांसफर — आपकी सुविधा अनुसार। हर 10 दिन में खाते में पैसे।</p>
     </div>
     <div class="service-card">
-      <div class="svc-icon">📊</div>
-      <h3 class="svc-title">डिजिटल पर्ची</h3>
-      <p class="svc-desc">हर बार दूध जमा करने पर ऑनलाइन रिकॉर्ड रहता है जिसे आप वेबसाइट पर अपने नाम से देख सकते हैं।</p>
+      <div class="svc-icon">📊</div><h3 class="svc-title">डिजिटल पर्ची</h3><p class="svc-desc">हर बार दूध जमा करने पर ऑनलाइन रिकॉर्ड रहता है जिसे आप वेबसाइट पर अपने नाम से देख सकते हैं।</p>
     </div>
     <div class="service-card">
-      <div class="svc-icon">🚗</div>
-      <h3 class="svc-title">होम कलेक्शन</h3>
-      <p class="svc-desc">50 लीटर से ज़्यादा दूध देने वाले किसानों के लिए घर से कलेक्शन की सुविधा (शर्तें लागू)। संपर्क करके जानें।</p>
+      <div class="svc-icon">🚗</div><h3 class="svc-title">होम कलेक्शन</h3><p class="svc-desc">50 लीटर से ज़्यादा दूध देने वाले किसानों के लिए घर से कलेक्शन की सुविधा (शर्तें लागू)। संपर्क करके जानें।</p>
     </div>
     <div class="service-card">
-      <div class="svc-icon">📱</div>
-      <h3 class="svc-title">WhatsApp अपडेट</h3>
-      <p class="svc-desc">रोज़ का रेट, मासिक हिसाब और किसी भी जानकारी के लिए WhatsApp ग्रुप में जोड़ा जाएगा। हमेशा कनेक्टेड रहें।</p>
+      <div class="svc-icon">📱</div><h3 class="svc-title">WhatsApp अपडेट</h3><p class="svc-desc">रोज़ का रेट, मासिक हिसाब और किसी भी जानकारी के लिए WhatsApp ग्रुप में जोड़ा जाएगा। हमेशा कनेक्टेड रहें।</p>
     </div>
   </div>
 </section>
@@ -500,44 +452,18 @@
     <div class="table-responsive">
       <table class="rates-table">
         <thead>
-          <tr>
-            <th>दूध का प्रकार</th>
-            <th>फैट %</th>
-            <th>भाव (₹/लीटर)</th>
-          </tr>
+          <tr><th>दूध का प्रकार</th><th>फैट %</th><th>भाव (₹/लीटर)</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>🐄 गाय का दूध (Standard)</td>
-            <td><span class="badge-fat">3.5%</span></td>
-            <td id="rate-cow-std">₹ 35.00</td>
-          </tr>
-          <tr>
-            <td>🐄 गाय का दूध (Premium)</td>
-            <td><span class="badge-fat">4.0%+</span></td>
-            <td id="rate-cow-prm">₹ 38.00</td>
-          </tr>
-          <tr>
-            <td>🐃 भैंस का दूध (Standard)</td>
-            <td><span class="badge-fat">6.0%</span></td>
-            <td id="rate-buf-std">₹ 52.00</td>
-          </tr>
-          <tr>
-            <td>🐃 भैंस का दूध (Premium)</td>
-            <td><span class="badge-fat">7.0%+</span></td>
-            <td id="rate-buf-prm">₹ 57.00</td>
-          </tr>
-          <tr>
-            <td>🌾 मिश्रित दूध (Mixed)</td>
-            <td><span class="badge-fat">5.0%</span></td>
-            <td id="rate-mix">₹ 44.00</td>
-          </tr>
+          <tr><td>🐄 गाय का दूध (Standard)</td><td><span class="badge-fat">3.5%</span></td><td id="rate-cow-std">₹ 35.00</td></tr>
+          <tr><td>🐄 गाय का दूध (Premium)</td><td><span class="badge-fat">4.0%+</span></td><td id="rate-cow-prm">₹ 38.00</td></tr>
+          <tr><td>🐃 भैंस का दूध (Standard)</td><td><span class="badge-fat">6.0%</span></td><td id="rate-buf-std">₹ 52.00</td></tr>
+          <tr><td>🐃 भैंस का दूध (Premium)</td><td><span class="badge-fat">7.0%+</span></td><td id="rate-buf-prm">₹ 57.00</td></tr>
+          <tr><td>🌾 मिश्रित दूध (Mixed)</td><td><span class="badge-fat">5.0%</span></td><td id="rate-mix">₹ 44.00</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:16px;">
-      ⚠️ रेट प्रतिदिन बाजार भाव के अनुसार बदल सकते हैं। अधिक जानकारी के लिए कॉल करें।
-    </p>
+    <p style="text-align:center;color:var(--muted);font-size:13px;margin-top:16px;">⚠️ रेट प्रतिदिन बाजार भाव के अनुसार बदल सकते हैं। अधिक जानकारी के लिए कॉल करें।</p>
   </div>
 </section>
 
@@ -549,28 +475,16 @@
   </div>
   <div class="steps">
     <div class="step">
-      <div class="step-icon">🚶</div>
-      <div class="step-num">1</div>
-      <h4 class="step-title">केंद्र आएं</h4>
-      <p class="step-desc">सुबह 7-9 बजे या शाम 7-9 बजे। ताजा दूध लेकर आएं। किसान कार्ड साथ लाएं।</p>
+      <div class="step-icon">🚶</div><div class="step-num">1</div><h4 class="step-title">केंद्र आएं</h4><p class="step-desc">सुबह 7-9 बजे या शाम 7-9 बजे। ताजा दूध लेकर आएं। किसान कार्ड साथ लाएं।</p>
     </div>
     <div class="step">
-      <div class="step-icon">⚖️</div>
-      <div class="step-num">2</div>
-      <h4 class="step-title">तौल और टेस्ट</h4>
-      <p class="step-desc">डिजिटल तराजू पर वजन। मशीन से फैट और SNF की जांच। सामने देख सकते हैं।</p>
+      <div class="step-icon">⚖️</div><div class="step-num">2</div><h4 class="step-title">तौल और टेस्ट</h4><p class="step-desc">डिजिटल तराजू पर वजन। मशीन से फैट और SNF की जांच। सामने देख सकते हैं।</p>
     </div>
     <div class="step">
-      <div class="step-icon">🧾</div>
-      <div class="step-num">3</div>
-      <h4 class="step-title">रसीद मिलती है</h4>
-      <p class="step-desc">तुरंत पर्ची मिलती है जिसमें वजन, फैट, SNF और रकम लिखी होती है।</p>
+      <div class="step-icon">🧾</div><div class="step-num">3</div><h4 class="step-title">रसीद मिलती है</h4><p class="step-desc">तुरंत पर्ची मिलती है जिसमें वजन, फैट, SNF और रकम लिखी होती है।</p>
     </div>
     <div class="step">
-      <div class="step-icon">💵</div>
-      <div class="step-num">4</div>
-      <h4 class="step-title">भुगतान पाएं</h4>
-      <p class="step-desc">10 दिन में बैंक में पैसे या रोज़ कैश — आपकी मर्जी। UPI भी उपलब्ध।</p>
+      <div class="step-icon">💵</div><div class="step-num">4</div><h4 class="step-title">भुगतान पाएं</h4><p class="step-desc">10 दिन में बैंक में पैसे या रोज़ कैश — आपकी मर्जी। UPI भी उपलब्ध।</p>
     </div>
   </div>
 </section>
@@ -583,34 +497,22 @@
   </div>
   <div class="why-grid">
     <div class="why-card">
-      <div class="why-icon">🏆</div>
-      <h4 class="why-title">8+ साल का अनुभव</h4>
-      <p class="why-desc">2016 से ग्राम नाहिल के किसानों की सेवा कर रहे हैं। हर किसान का भरोसा हमारी ताकत है。</p>
+      <div class="why-icon">🏆</div><h4 class="why-title">8+ साल का अनुभव</h4><p class="why-desc">2016 से ग्राम नाहिल के किसानों की सेवा कर रहे हैं। हर किसान का भरोसा हमारी ताकत है。</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">⚡</div>
-      <h4 class="why-title">तेज़ और सटीक</h4>
-      <p class="why-desc">डिजिटल मशीनें झूठ नहीं बोलतीं। फैट और SNF की जांच 2 मिनट में — कोई इंतजार नहीं।</p>
+      <div class="why-icon">⚡</div><h4 class="why-title">तेज़ और सटीक</h4><p class="why-desc">डिजिटल मशीनें झूठ नहीं बोलतीं। फैट और SNF की जांच 2 मिनट में — कोई इंतजार नहीं。</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">💎</div>
-      <h4 class="why-title">बेहतर दाम</h4>
-      <p class="why-desc">आसपास के किसी भी केंद्र से ज़्यादा दाम। गुणवत्ता के आधार पर बोनस भी मिलता है।</p>
+      <div class="why-icon">💎</div><h4 class="why-title">बेहतर दाम</h4><p class="why-desc">आसपास के किसी भी केंद्र से ज़्यादा दाम। गुणवत्ता के आधार पर बोनस भी मिलता है。</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">🤝</div>
-      <h4 class="why-title">भरोसेमंद</h4>
-      <p class="why-desc">500+ किसान परिवार हमसे जुड़े हैं। कोई छल-कपट नहीं — हर लेन-देन का रिकॉर्ड।</p>
+      <div class="why-icon">🤝</div><h4 class="why-title">भरोसेमंद</h4><p class="why-desc">500+ किसान परिवार हमसे जुड़े हैं। कोई छल-कपट नहीं — हर लेन-देन का रिकॉर्ड。</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">🌱</div>
-      <h4 class="why-title">किसान का हित</h4>
-      <p class="why-desc">किसानों को अच्छी नस्ल, पशु चारा और बीमा की जानकारी भी निःशुल्क दी जाती है।</p>
+      <div class="why-icon">🌱</div><h4 class="why-title">किसान का हित</h4><p class="why-desc">किसानों को अच्छी नस्ल, पशु चारा और बीमा की जानकारी भी निःशुल्क दी जाती है。</p>
     </div>
     <div class="why-card">
-      <div class="why-icon">📞</div>
-      <h4 class="why-title">24/7 संपर्क</h4>
-      <p class="why-desc">किसी भी समस्या के लिए कभी भी फोन करें। आशीष जी खुद बात करते हैं — कोई बिचौलिया नहीं।</p>
+      <div class="why-icon">📞</div><h4 class="why-title">24/7 संपर्क</h4><p class="why-desc">किसी भी समस्या के लिए कभी भी फोन करें। आशीष जी खुद बात करते हैं — कोई बिचौलिया नहीं。</p>
     </div>
   </div>
 </section>
@@ -619,41 +521,20 @@
   <div class="section-header">
     <div class="section-eyebrow">किसानों की राय</div>
     <h2 class="section-title">हमारे किसान क्या कहते हैं?</h2>
-    <p class="section-desc">उनके शब्द ही हमारी असली पहचान हैं।</p>
+    <p class="section-desc">उनके शब्द ही हमारी असली पहचान हैं。</p>
   </div>
   <div class="testi-grid">
     <div class="testi-card">
-      <div class="stars">★★★★★</div>
-      <p class="testi-text">"आशीष जी के केंद्र से जुड़ने के बाद मुझे कभी दूध के दाम को लेकर परेशान नहीं होना पड़ा। मशीन से टेस्ट होता है, वेबसाइट पर रिकॉर्ड रहता है — सब कुछ साफ और साफ।"</p>
-      <div class="testi-author">
-        <div class="testi-avatar">रा</div>
-        <div>
-          <div class="testi-name">राम प्रसाद यादव</div>
-          <div class="testi-loc">ग्राम नाहिल, 2 साल से जुड़े</div>
-        </div>
-      </div>
+      <div class="stars">★★★★★</div><p class="testi-text">"आशीष जी के केंद्र से जुड़ने के बाद मुझे कभी दूध के दाम को लेकर परेशान नहीं होना पड़ा। मशीन से टेस्ट होता है, वेबसाइट पर रिकॉर्ड रहता है — सब कुछ साफ और साफ।"</p>
+      <div class="testi-author"><div class="testi-avatar">रा</div><div><div class="testi-name">राम प्रसाद यादव</div><div class="testi-loc">ग्राम नाहिल, 2 साल से जुड़े</div></div></div>
     </div>
     <div class="testi-card">
-      <div class="stars">★★★★★</div>
-      <p class="testi-text">"पहले हम दूसरे केंद्र जाते थे, वहाँ दाम कम मिलते थे। यहाँ आने के बाद से हर महीने 400-500 रुपये ज़्यादा मिलते हैं। बहुत खुश हैं।"</p>
-      <div class="testi-author">
-        <div class="testi-avatar">सु</div>
-        <div>
-          <div class="testi-name">सुरेश कुमार</div>
-          <div class="testi-loc">पड़ोसी गाँव, 1 साल से जुड़े</div>
-        </div>
-      </div>
+      <div class="stars">★★★★★</div><p class="testi-text">"पहले हम दूसरे केंद्र जाते थे, वहाँ दाम कम मिलते थे। यहाँ आने के बाद से हर महीने 400-500 रुपये ज़्यादा मिलते हैं। बहुत खुश हैं।"</p>
+      <div class="testi-author"><div class="testi-avatar">सु</div><div><div class="testi-name">सुरेश कुमार</div><div class="testi-loc">पड़ोसी गाँव, 1 साल से जुड़े</div></div></div>
     </div>
     <div class="testi-card">
-      <div class="stars">★★★★★</div>
-      <p class="testi-text">"मेरे पास 4 भैंसें हैं। आशीष जी WhatsApp ग्रुप पर रोज़ रेट भेजते हैं। पैसे भी समय पर आते हैं। बहुत अच्छा है।"</p>
-      <div class="testi-author">
-        <div class="testi-avatar">शी</div>
-        <div>
-          <div class="testi-name">शीला देवी</div>
-          <div class="testi-loc">ग्राम नाहिल, 2 साल से जुड़ी</div>
-        </div>
-      </div>
+      <div class="stars">★★★★★</div><p class="testi-text">"मेरे पास 4 भैंसें हैं। आशीष जी WhatsApp ग्रुप पर रोज़ रेट भेजते हैं। पैसे भी समय पर आते हैं। बहुत अच्छा है।"</p>
+      <div class="testi-author"><div class="testi-avatar">शी</div><div><div class="testi-name">शीला देवी</div><div class="testi-loc">ग्राम नाहिल, 2 साल से जुड़ी</div></div></div>
     </div>
   </div>
 </section>
@@ -667,68 +548,21 @@
   <div class="contact-wrap">
     <div class="contact-info">
       <h3>आशीष मिश्रा<br>नाहिल मिल्क कलेक्शन सेंटर</h3>
-      <div class="info-row">
-        <div class="info-icon">📍</div>
-        <div class="info-text">
-          <strong>पता</strong>
-          <span>ग्राम व पोस्ट — नाहिल<br>जिला — शाहजहांपुर, उत्तर प्रदेश</span>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon">📞</div>
-        <div class="info-text">
-          <strong>मोबाइल / WhatsApp</strong>
-          <span>+91 9236179356<br>सुबह 5 बजे से रात 8 बजे तक</span>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon">⏰</div>
-        <div class="info-text">
-          <strong>कलेक्शन का समय</strong>
-          <span>🌅 सुबह: 7:00 – 9:00 बजे<br>🌆 शाम: 7:00 – 9:00 बजे<br>सप्ताह के सातों दिन</span>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon">💳</div>
-        <div class="info-text">
-          <strong>भुगतान के तरीके</strong>
-          <span>Cash • UPI (PhonePe / GPay) • Bank Transfer</span>
-        </div>
-      </div>
+      <div class="info-row"><div class="info-icon">📍</div><div class="info-text"><strong>पता</strong><span>ग्राम व पोस्ट — नाहिल<br>जिला — शाहजहांपुर, उत्तर प्रदेश</span></div></div>
+      <div class="info-row"><div class="info-icon">📞</div><div class="info-text"><strong>मोबाइल / WhatsApp</strong><span>+91 9236179356<br>सुबह 5 बजे से रात 8 बजे तक</span></div></div>
+      <div class="info-row"><div class="info-icon">⏰</div><div class="info-text"><strong>कलेक्शन का समय</strong><span>🌅 सुबह: 7:00 – 9:00 बजे<br>🌆 शाम: 7:00 – 9:00 बजे<br>सप्ताह के सातों दिन</span></div></div>
+      <div class="info-row"><div class="info-icon">💳</div><div class="info-text"><strong>भुगतान के तरीके</strong><span>Cash • UPI (PhonePe / GPay) • Bank Transfer</span></div></div>
     </div>
     <div class="contact-form">
       <h4>📝 अपनी जानकारी दर्ज करें</h4>
       <div class="form-row">
-        <div class="form-group">
-          <label>पूरा नाम *</label>
-          <input type="text" id="fname" placeholder="आपका नाम" />
-        </div>
-        <div class="form-group">
-          <label>मोबाइल नंबर *</label>
-          <input type="tel" id="fphone" placeholder="+91 9236179356" />
-        </div>
+        <div class="form-group"><label>पूरा नाम *</label><input type="text" id="fname" placeholder="आपका नाम" /></div>
+        <div class="form-group"><label>मोबाइल नंबर *</label><input type="tel" id="fphone" placeholder="+91 9236179356" /></div>
       </div>
-      <div class="form-group">
-        <label>गाँव / पता</label>
-        <input type="text" id="fvillage" placeholder="आपके गाँव का नाम" />
-      </div>
-      <div class="form-group">
-        <label>दूध का प्रकार</label>
-        <select id="fmilk">
-          <option value="">-- चुनें --</option>
-          <option>🐄 गाय का दूध</option>
-          <option>🐃 भैंस का दूध</option>
-          <option>🌾 मिश्रित (दोनों)</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>रोज़ाना दूध (लगभग कितना लीटर)</label>
-        <input type="text" id="flitre" placeholder="जैसे — 5 लीटर" />
-      </div>
-      <div class="form-group">
-        <label>कोई सवाल या संदेश</label>
-        <textarea id="fmsg" placeholder="यहाँ लिखें..."></textarea>
-      </div>
+      <div class="form-group"><label>गाँव / पता</label><input type="text" id="fvillage" placeholder="आपके गाँव का नाम" /></div>
+      <div class="form-group"><label>दूध का प्रकार</label><select id="fmilk"><option value="">-- चुनें --</option><option>🐄 गाय का दूध</option><option>🐃 भैंस का दूध</option><option>🌾 मिश्रित (दोनों)</option></select></div>
+      <div class="form-group"><label>रोज़ाना दूध (लगभग कितना लीटर)</label><input type="text" id="flitre" placeholder="जैसे — 5 लीटर" /></div>
+      <div class="form-group"><label>कोई सवाल या संदेश</label><textarea id="fmsg" placeholder="यहाँ लिखें..."></textarea></div>
       <button class="btn-submit" onclick="submitForm()">🥛 जुड़ने के लिए भेजें</button>
       <div class="form-success" id="formSuccess">✅ धन्यवाद! हम जल्द ही आपसे संपर्क करेंगे।</div>
     </div>
@@ -740,8 +574,7 @@
     <div class="map-placeholder">
       <span class="big">🗺️</span>
       <strong>नाहिल मिल्क कलेक्शन सेंटर — ग्राम नाहिल</strong>
-      <p>Google Maps पर हमें खोजें: "Ashish Dairy Nahil Milk Collection Center"<br>
-      या नीचे दिए नंबर पर कॉल करके रास्ता पूछें — हम गाइड करेंगे!</p>
+      <p>Google Maps पर हमें खोजें: "Ashish Dairy Nahil Milk Collection Center"<br>या नीचे दिए नंबर पर कॉल करके रास्ता पूछें — हम गाइड करेंगे!</p>
       <a href="https://wa.me/919236179356" target="_blank" style="display:inline-block;margin-top:20px;background:var(--gold);color:var(--blue);font-weight:700;padding:12px 28px;border-radius:20px;text-decoration:none;font-size:15px;">📍 लोकेशन के लिए मैसेज करें</a>
     </div>
   </div>
@@ -757,43 +590,17 @@
         <button onclick="readParchiWithAI()" id="aiBtn" style="background:var(--gold); color:var(--blue); padding:12px 25px; border:none; border-radius:8px; font-weight:bold; font-size: 16px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">📸 पर्ची स्कैन करें</button>
         <p style="font-size: 12px; color: #666; margin-top: 10px;">(अपनी पर्ची की फोटो खींचें, AI खुद-ब-खुद डिब्बे भर देगा)</p>
     </div>
+
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">किसान का नाम</label>
-        <input type="text" id="admName" placeholder="नाम लिखें" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">तारीख</label>
-        <input type="date" id="admDate" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">शिफ्ट</label>
-        <select id="admShift" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-          <option value="सुबह">सुबह</option>
-          <option value="शाम">शाम</option>
-        </select>
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">FAT %</label>
-        <input type="number" id="admFat" step="0.1" placeholder="0.0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">SNF %</label>
-        <input type="number" id="admSnf" step="0.1" placeholder="0.0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">लीटर</label>
-        <input type="number" id="admLitre" step="0.01" placeholder="0.00" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
-      <div style="display: flex; flex-direction: column;">
-        <label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">कुल रकम ₹</label>
-        <input type="number" id="admTotal" placeholder="0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;">
-      </div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">किसान का नाम</label><input type="text" id="admName" placeholder="नाम लिखें" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">तारीख</label><input type="date" id="admDate" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">शिफ्ट</label><select id="admShift" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"><option value="सुबह">सुबह</option><option value="शाम">शाम</option></select></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">FAT %</label><input type="number" id="admFat" step="0.1" placeholder="0.0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">SNF %</label><input type="number" id="admSnf" step="0.1" placeholder="0.0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">लीटर</label><input type="number" id="admLitre" step="0.01" placeholder="0.00" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">कुल रकम ₹</label><input type="number" id="admTotal" placeholder="0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
     </div>
-    
-    <button onclick="adminSubmit()" id="saveBtn" style="width: 100%; margin-top: 30px; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;">
-      💾 डेटा सुरक्षित सेव करें
-    </button>
+    <button onclick="adminSubmit()" id="saveBtn" style="width: 100%; margin-top: 30px; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;">💾 डेटा सुरक्षित सेव करें</button>
   </div>
 
   <div style="max-width: 1100px; margin: 60px auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #1a3a5c;">
@@ -802,17 +609,10 @@
       <table class="rates-table" style="min-width: 600px;">
         <thead>
           <tr style="background: #f1f1f1; border-bottom: 2px solid #1a3a5c;">
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">तारीख</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">शिफ्ट</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">नाम</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">FAT/SNF</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">लीटर</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">कुल ₹</th>
-            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">ऐक्शन</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">तारीख</th><th style="padding: 15px; color: #1a3a5c; font-weight: bold;">शिफ्ट</th><th style="padding: 15px; color: #1a3a5c; font-weight: bold;">नाम</th><th style="padding: 15px; color: #1a3a5c; font-weight: bold;">FAT/SNF</th><th style="padding: 15px; color: #1a3a5c; font-weight: bold;">लीटर</th><th style="padding: 15px; color: #1a3a5c; font-weight: bold;">कुल ₹</th><th style="padding: 15px; color: #1a3a5c; font-weight: bold;">ऐक्शन</th>
           </tr>
         </thead>
-        <tbody id="tableBodyContent" style="color: #000000 !important; background: #ffffff;">
-          </tbody>
+        <tbody id="tableBodyContent" style="color: #000000 !important; background: #ffffff;"></tbody>
       </table>
     </div>
   </div>
@@ -824,31 +624,20 @@
       <div class="footer-brand">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
           <div style="width:42px;height:42px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;">🥛</div>
-          <div class="logo-text">
-            <strong>Nahil Milk Center</strong>
-            <span>Ashish Mishra</span>
-          </div>
+          <div class="logo-text"><strong>Nahil Milk Center</strong><span>Ashish Mishra</span></div>
         </div>
         <p>ग्राम नाहिल के किसानों के लिए एक भरोसेमंद, पारदर्शी और उचित दाम वाला मिल्क कलेक्शन सेंटर। 2016 से आपकी सेवा में।</p>
       </div>
       <div class="footer-col">
         <h5>Quick Links</h5>
         <ul>
-          <li><a href="#home">🏠 होम</a></li>
-          <li><a href="#record">📝 ऑनलाइन डायरी</a></li>
-          <li><a href="#services">⚙️ सेवाएं</a></li>
-          <li><a href="#rates">💰 आज का रेट</a></li>
-          <li><a href="#contact">📞 संपर्क</a></li>
+          <li><a href="#home">🏠 होम</a></li><li><a href="#record">📝 ऑनलाइन डायरी</a></li><li><a href="#services">⚙️ सेवाएं</a></li><li><a href="#rates">💰 आज का रेट</a></li><li><a href="#contact">📞 संपर्क</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>समय और संपर्क</h5>
         <ul>
-          <li><a href="#">🌅 सुबह: 7 – 9 बजे</a></li>
-          <li><a href="#">🌆 शाम: 7 – 9 बजे</a></li>
-          <li><a href="tel:+919236179356">📞 +91 9236179356</a></li>
-          <li><a href="#">📍 पोस्ट नाहिल, शाहजहांपुर</a></li>
-          <li><a href="https://wa.me/919236179356">💬 WhatsApp करें</a></li>
+          <li><a href="#">🌅 सुबह: 7 – 9 बजे</a></li><li><a href="#">🌆 शाम: 7 – 9 बजे</a></li><li><a href="tel:+919236179356">📞 +91 9236179356</a></li><li><a href="#">📍 पोस्ट नाहिल, शाहजहांपुर</a></li><li><a href="https://wa.me/919236179356">💬 WhatsApp करें</a></li>
         </ul>
       </div>
     </div>
@@ -868,7 +657,7 @@
 
 <script>
   // ==========================================
-  // 👇 आपकी अपनी API KEY (AI मुनीम और डॉक्टर के लिए)
+  // 👇 यहाँ आपकी API KEY और 100% सही मॉडल नाम सेट है 👇
   // ==========================================
   const GEMINI_API_KEY = 'AIzaSyB_bSEdk4Ji5NJVgp325pXU27-9hqe3hfQ';
   const masterURL = 'https://script.google.com/macros/s/AKfycbxHDyH6yhEH43n-_WSCcVl5h4RwwlHOI_cZhumEeM1Cv6IPyddBcxCf9Wn4hbsoxXx_/exec';
@@ -879,46 +668,27 @@
     m.classList.toggle('open');
   }
 
-  // === 1. AI DOCTOR CHATBOT LOGIC (With Real Error Logging) ===
+  // === 1. AI DOCTOR CHATBOT LOGIC ===
   function toggleChat() {
       const win = document.getElementById('aiChatWindow');
       win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
   }
 
-  // --- Voice Typing Logic ---
   function startVoiceTyping() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-          alert("आपके ब्राउज़र में बोलकर टाइप करने की सुविधा नहीं है। कृपया Chrome ब्राउज़र का इस्तेमाल करें।");
-          return;
-      }
+      if (!SpeechRecognition) { alert("आपके ब्राउज़र में बोलकर टाइप करने की सुविधा नहीं है। कृपया Chrome ब्राउज़र का इस्तेमाल करें।"); return; }
       
       const recognition = new SpeechRecognition();
       recognition.lang = 'hi-IN'; 
       recognition.interimResults = false;
-      
       const inputField = document.getElementById('chatInput');
       inputField.placeholder = "सुन रहा हूँ... बोलिए 🎤";
-      
       recognition.start();
-      
-      recognition.onresult = function(event) {
-          const transcript = event.results[0][0].transcript;
-          inputField.value = transcript;
-          inputField.placeholder = "अपना सवाल यहाँ लिखें...";
-      };
-      
-      recognition.onerror = function(event) {
-          alert("आवाज़ समझ नहीं आई, कृपया दोबारा बटन दबाकर बोलें।");
-          inputField.placeholder = "अपना सवाल यहाँ लिखें...";
-      };
-      
-      recognition.onend = function() {
-          inputField.placeholder = "अपना सवाल यहाँ लिखें...";
-      };
+      recognition.onresult = function(event) { inputField.value = event.results[0][0].transcript; inputField.placeholder = "अपना सवाल यहाँ लिखें..."; };
+      recognition.onerror = function(event) { alert("आवाज़ समझ नहीं आई, कृपया दोबारा बोलें।"); inputField.placeholder = "अपना सवाल यहाँ लिखें..."; };
+      recognition.onend = function() { inputField.placeholder = "अपना सवाल यहाँ लिखें..."; };
   }
 
-  // --- Send AI Message Logic ---
   async function sendAiMsg() {
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
@@ -934,9 +704,9 @@
       chatBody.scrollTop = chatBody.scrollHeight;
       
       try {
-          const sysPrompt = "तुम 'नाहिल मिल्क सेंटर' (संचालक: आशीष मिश्रा) के एक AI पशु डॉक्टर और डेयरी असिस्टेंट हो। तुम्हारा काम किसानों को गाय/भैंस की बीमारियों, दूध बढ़ाने के तरीकों और चारे के बारे में सही और आसान हिंदी में जानकारी देना है। जवाब छोटे, आदरपूर्ण और सटीक होने चाहिए। ध्यान दें: किसान 'गाय' (Cow) को अंग्रेजी अक्षरों में 'Gay' लिख सकता है, इसे हमेशा पशु (Cow) ही समझें और सही जवाब दें।";
+          const sysPrompt = "तुम 'नाहिल मिल्क सेंटर' (संचालक: आशीष मिश्रा) के एक AI पशु डॉक्टर और डेयरी असिस्टेंट हो। तुम्हारा काम किसानों को गाय/भैंस की बीमारियों, दूध बढ़ाने के तरीकों और चारे के बारे में सही और आसान हिंदी में जानकारी देना है। जवाब छोटे, आदरपूर्ण और सटीक होने चाहिए।";
           
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
@@ -945,10 +715,9 @@
           });
           const result = await response.json();
           
-          // ✨ यहाँ असली API Error दिखेगा ✨
           if(result.error) {
-              console.error("Google API Error:", result.error);
-              document.getElementById(aiThinkingId).innerHTML = `<span style="color:#D32F2F; font-weight:bold;">Google API Error:</span><br><span style="font-size:12px;">${result.error.message}</span><br><br><small style="color:#1A3A5C;">(भाई आशीष, कृपया इस लाल मैसेज का स्क्रीनशॉट भेजें)</small>`;
+              console.error("API Error:", result.error);
+              document.getElementById(aiThinkingId).innerHTML = `<span style="color:#D32F2F; font-weight:bold;">API Error:</span><br><span style="font-size:12px;">${result.error.message}</span>`;
               return;
           }
 
@@ -974,28 +743,14 @@
     const litre = document.getElementById('flitre').value.trim();
     const message = document.getElementById('fmsg').value.trim();
 
-    if (!name || !phone) {
-      alert('कृपया नाम और मोबाइल नंबर ज़रूर भरें।');
-      return;
-    }
-
+    if (!name || !phone) { alert('कृपया नाम और मोबाइल नंबर ज़रूर भरें।'); return; }
     document.querySelector('.btn-submit').style.display = 'none';
 
     try {
       await fetch(contactURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'name': name,
-          'phone': phone,
-          'village': village,
-          'milkType': milkType,
-          'litre': litre,
-          'message': message
-        })
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ 'name': name, 'phone': phone, 'village': village, 'milkType': milkType, 'litre': litre, 'message': message })
       });
-
       document.getElementById('formSuccess').style.display = 'block';
     } catch (error) {
       alert('कुछ गड़बड़ हो गई, कृपया इंटरनेट चेक करें।');
@@ -1003,25 +758,14 @@
     }
   }
 
-  // Card Animations
   const cards = document.querySelectorAll('.service-card,.why-card,.testi-card,.step');
   const io = new IntersectionObserver((entries)=>{
     entries.forEach((e,i)=>{
-      if(e.isIntersecting){
-        e.target.style.transitionDelay = (i % 4 * 0.08)+'s';
-        e.target.style.opacity='1';
-        e.target.style.transform='translateY(0)';
-      }
+      if(e.isIntersecting){ e.target.style.transitionDelay = (i % 4 * 0.08)+'s'; e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
     });
   },{threshold:0.15});
-  cards.forEach(c=>{
-    c.style.opacity='0';
-    c.style.transform='translateY(28px)';
-    c.style.transition='opacity .5s ease, transform .5s ease, box-shadow .3s';
-    io.observe(c);
-  });
+  cards.forEach(c=>{ c.style.opacity='0'; c.style.transform='translateY(28px)'; c.style.transition='opacity .5s ease, transform .5s ease, box-shadow .3s'; io.observe(c); });
 
-  // Load Data
   document.addEventListener('DOMContentLoaded', () => {
       if(typeof siteData !== 'undefined') {
           document.getElementById('rate-cow-std').innerText = siteData.rates.cowStandard;
@@ -1029,13 +773,7 @@
           document.getElementById('rate-buf-std').innerText = siteData.rates.buffaloStandard;
           document.getElementById('rate-buf-prm').innerText = siteData.rates.buffaloPremium;
           document.getElementById('rate-mix').innerText = siteData.rates.mixed;
-          
-          document.getElementById('dynamic-ticker').innerHTML = `
-            <span>${siteData.tickerMessage}</span>
-            <span>${siteData.tickerMessage}</span>
-            <span>${siteData.tickerMessage}</span>
-            <span>${siteData.tickerMessage}</span>
-          `;
+          document.getElementById('dynamic-ticker').innerHTML = `<span>${siteData.tickerMessage}</span><span>${siteData.tickerMessage}</span><span>${siteData.tickerMessage}</span><span>${siteData.tickerMessage}</span>`;
       }
   });
 
@@ -1047,22 +785,15 @@
     const errorMsg = document.getElementById('errorMsg');
     const totalSumText = document.getElementById('totalSumText');
 
-    if(searchInput === "") {
-        alert("कृपया किसान का नाम डालें!");
-        return;
-    }
-
+    if(searchInput === "") { alert("कृपया किसान का नाम डालें!"); return; }
     recordBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>रिकॉर्ड खोजा जा रहा है... ⏳</td></tr>";
-    resultArea.style.display = "block";
-    errorMsg.style.display = "none";
+    resultArea.style.display = "block"; errorMsg.style.display = "none";
 
     try {
         const response = await fetch(masterURL);
         const data = await response.json();
-        
         recordBody.innerHTML = "";
-        let recordFound = false;
-        let totalAmount = 0;
+        let recordFound = false, totalAmount = 0;
 
         for(let i = 1; i < data.length; i++) {
             const r = data[i];
@@ -1070,121 +801,51 @@
                 const farmerName = (r[1] || "").toString().trim().toLowerCase();
                 if(farmerName.includes(searchInput) && searchInput.length > 2 || farmerName === searchInput) {
                     recordFound = true;
-                    
-                    let dateStr = r[0] || "-";
-                    let shiftStr = "-";
-                    
+                    let dateStr = r[0] || "-", shiftStr = "-";
                     if(typeof dateStr === 'string') {
-                        if(dateStr.includes(' | ')) {
-                            const parts = dateStr.split(' | ');
-                            dateStr = parts[0];
-                            shiftStr = parts[1];
-                        }
-                        if(dateStr.includes('T')) {
-                            dateStr = dateStr.split('T')[0]; 
-                        }
-                        
+                        if(dateStr.includes(' | ')) { const parts = dateStr.split(' | '); dateStr = parts[0]; shiftStr = parts[1]; }
+                        if(dateStr.includes('T')) { dateStr = dateStr.split('T')[0]; }
                         let dParts1 = dateStr.split('-');
-                        if(dParts1.length === 3 && dParts1[0].length === 4) {
-                            dateStr = dParts1[2] + "-" + dParts1[1] + "-" + dParts1[0];
-                        }
+                        if(dParts1.length === 3 && dParts1[0].length === 4) { dateStr = dParts1[2] + "-" + dParts1[1] + "-" + dParts1[0]; }
                     }
-                    
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${dateStr}</td>
-                        <td style="text-align:center; font-weight:bold; color: #2C5F8A;">${shiftStr}</td>
-                        <td>${r[4] || "0"} L</td>
-                        <td>${r[2] || "-"}</td>
-                        <td>${r[3] || "-"}</td>
-                        <td style="font-weight:bold; color: #28a745;">₹ ${r[5] || "0"}</td>
-                    `;
+                    tr.innerHTML = `<td>${dateStr}</td><td style="text-align:center; font-weight:bold; color: #2C5F8A;">${shiftStr}</td><td>${r[4] || "0"} L</td><td>${r[2] || "-"}</td><td>${r[3] || "-"}</td><td style="font-weight:bold; color: #28a745;">₹ ${r[5] || "0"}</td>`;
                     recordBody.appendChild(tr);
                     totalAmount += parseFloat(r[5]) || 0;
                 }
             }
         }
-
-        if(recordFound) {
-            errorMsg.style.display = "none";
-            resultArea.style.display = "block";
-            totalSumText.innerText = `कुल जमा राशि: ₹ ${totalAmount.toFixed(2)}`;
-        } else {
-            resultArea.style.display = "none";
-            errorMsg.style.display = "block";
-        }
-
-    } catch(error) {
-        console.log(error);
-        alert("डेटा लोड करने में समस्या आ रही है। कृपया इंटरनेट चेक करें।");
-        resultArea.style.display = "none";
-    }
+        if(recordFound) { errorMsg.style.display = "none"; resultArea.style.display = "block"; totalSumText.innerText = `कुल जमा राशि: ₹ ${totalAmount.toFixed(2)}`; } 
+        else { resultArea.style.display = "none"; errorMsg.style.display = "block"; }
+    } catch(error) { alert("डेटा लोड करने में समस्या आ रही है। कृपया इंटरनेट चेक करें।"); resultArea.style.display = "none"; }
   }
 
   // === 4. एडमिन का काम (नया डेटा डालना) ===
   async function adminSubmit() {
       const btn = document.getElementById('saveBtn');
-      
       const rawDate = document.getElementById('admDate').value;
       const shiftVal = document.getElementById('admShift').value;
       const combinedDate = rawDate + " | " + shiftVal;
 
-      const params = {
-          name: document.getElementById('admName').value.trim(),
-          date: combinedDate,
-          fat: document.getElementById('admFat').value,
-          snf: document.getElementById('admSnf').value,
-          litre: document.getElementById('admLitre').value,
-          total: document.getElementById('admTotal').value
-      };
+      const params = { name: document.getElementById('admName').value.trim(), date: combinedDate, fat: document.getElementById('admFat').value, snf: document.getElementById('admSnf').value, litre: document.getElementById('admLitre').value, total: document.getElementById('admTotal').value };
 
-      if(!document.getElementById('admName').value.trim() || !rawDate) {
-          alert("कृपया किसान का नाम और तारीख ज़रूर भरें!");
-          return;
-      }
-
-      btn.innerText = "सेव हो रहा है... ⏳";
-      btn.disabled = true;
+      if(!document.getElementById('admName').value.trim() || !rawDate) { alert("कृपया किसान का नाम और तारीख ज़रूर भरें!"); return; }
+      btn.innerText = "सेव हो रहा है... ⏳"; btn.disabled = true;
 
       try {
-          await fetch(masterURL, {
-              method: 'POST',
-              mode: 'no-cors',
-              body: new URLSearchParams(params)
-          });
+          await fetch(masterURL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(params) });
           alert("बधाई हो! डेटा सुरक्षित सेव हो गया है।");
-          
-          document.getElementById('admName').value = "";
-          document.getElementById('admShift').value = "सुबह";
-          document.getElementById('admFat').value = "";
-          document.getElementById('admSnf').value = "";
-          document.getElementById('admLitre').value = "";
-          document.getElementById('admTotal').value = "";
-          
+          document.getElementById('admName').value = ""; document.getElementById('admShift').value = "सुबह"; document.getElementById('admFat').value = ""; document.getElementById('admSnf').value = ""; document.getElementById('admLitre').value = ""; document.getElementById('admTotal').value = "";
           loadLiveRecords(); 
-      } catch (e) {
-          alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।");
-      } finally {
-          btn.innerText = "💾 डेटा सुरक्षित सेव करें";
-          btn.disabled = false;
-      }
+      } catch (e) { alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।"); } 
+      finally { btn.innerText = "💾 डेटा सुरक्षित सेव करें"; btn.disabled = false; }
   }
 
   // === 5. एडमिन का काम (डेटा मिटाना) ===
   async function deleteRow(index) {
       if(!confirm("क्या आप वाकई इस रिकॉर्ड को मिटाना चाहते हैं?")) return;
-
-      try {
-          await fetch(masterURL, {
-              method: 'POST',
-              mode: 'no-cors',
-              body: new URLSearchParams({action: "delete", rowIndex: index})
-          });
-          alert("रिकॉर्ड सफलतापूर्वक हटा दिया गया!");
-          loadLiveRecords(); 
-      } catch (e) {
-          alert("मिटाने में समस्या आई, इंटरनेट चेक करें।");
-      }
+      try { await fetch(masterURL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({action: "delete", rowIndex: index}) }); alert("रिकॉर्ड सफलतापूर्वक हटा दिया गया!"); loadLiveRecords(); } 
+      catch (e) { alert("मिटाने में समस्या आई, इंटरनेट चेक करें।"); }
   }
 
   // === 6. एडमिन पैनल में डेटा दिखाना ===
@@ -1195,119 +856,55 @@
       try {
           const response = await fetch(masterURL);
           const data = await response.json();
-          
           tableBody.innerHTML = ""; 
           for (let i = 1; i < data.length; i++) {
               const row = data[i];
-              let dateStr = row[0] || "-";
-              let shiftStr = "-";
-              
+              let dateStr = row[0] || "-", shiftStr = "-";
               if(typeof dateStr === 'string') {
-                  if(dateStr.includes(' | ')) {
-                      const parts = dateStr.split(' | ');
-                      dateStr = parts[0];
-                      shiftStr = parts[1];
-                  }
-                  if(dateStr.includes('T')) {
-                      dateStr = dateStr.split('T')[0];
-                  }
-                  
-                  let dParts2 = dateStr.split('-');
-                  if(dParts2.length === 3 && dParts2[0].length === 4) {
-                      dateStr = dParts2[2] + "-" + dParts2[1] + "-" + dParts2[0];
-                  }
+                  if(dateStr.includes(' | ')) { const parts = dateStr.split(' | '); dateStr = parts[0]; shiftStr = parts[1]; }
+                  if(dateStr.includes('T')) { dateStr = dateStr.split('T')[0]; }
+                  let dParts2 = dateStr.split('-'); if(dParts2.length === 3 && dParts2[0].length === 4) { dateStr = dParts2[2] + "-" + dParts2[1] + "-" + dParts2[0]; }
               }
-              
-              tableBody.innerHTML += `
-                  <tr style="border-bottom: 1px solid #eee;">
-                      <td style="padding: 12px;">${dateStr}</td>
-                      <td style="padding: 12px; color: #2C5F8A; font-weight:bold;">${shiftStr}</td>
-                      <td style="padding: 12px; font-weight:bold;">${row[1] || '-'}</td>
-                      <td style="padding: 12px;">${row[2]} / ${row[3]}</td>
-                      <td style="padding: 12px;">${row[4]} L</td>
-                      <td style="padding: 12px; color: #28a745; font-weight:bold;">₹ ${row[5]}</td>
-                      <td style="padding: 12px; text-align:center;">
-                          <button onclick="deleteRow(${i})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button>
-                      </td>
-                  </tr>
-              `;
+              tableBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;"><td style="padding: 12px;">${dateStr}</td><td style="padding: 12px; color: #2C5F8A; font-weight:bold;">${shiftStr}</td><td style="padding: 12px; font-weight:bold;">${row[1] || '-'}</td><td style="padding: 12px;">${row[2]} / ${row[3]}</td><td style="padding: 12px;">${row[4]} L</td><td style="padding: 12px; color: #28a745; font-weight:bold;">₹ ${row[5]}</td><td style="padding: 12px; text-align:center;"><button onclick="deleteRow(${i})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button></td></tr>`;
           }
-      } catch (e) {
-          tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center; color:red; padding:20px;'>रिकॉर्ड लोड नहीं हो सके।</td></tr>";
-      }
+      } catch (e) { tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center; color:red; padding:20px;'>रिकॉर्ड लोड नहीं हो सके।</td></tr>"; }
   }
 
   // === 7. SECRET ADMIN LOGIN (Ad29) ===
   function openAdmin(){
       var p = prompt("Admin Security PIN Dalein:");
-      if(p === "Ad29"){
-          document.getElementById('admin-panel').style.display = 'block';
-          window.location.href = '#admin-panel';
-          loadLiveRecords();
-      } else if(p !== null){
-          alert("Galat Password!");
-      }
+      if(p === "Ad29"){ document.getElementById('admin-panel').style.display = 'block'; window.location.href = '#admin-panel'; loadLiveRecords(); } 
+      else if(p !== null){ alert("Galat Password!"); }
   }
 
-  // === 8. AI PARCHI SCANNER (जादू) ===
+  // === 8. AI PARCHI SCANNER ===
   async function readParchiWithAI() {
       const fileInput = document.getElementById('parchiImage');
       const aiBtn = document.getElementById('aiBtn');
+      if(!fileInput.files[0]) { alert("भाई, पहले पर्ची की फोटो तो चुनें! 📸"); return; }
       
-      if(!fileInput.files[0]) {
-          alert("भाई, पहले पर्ची की फोटो तो चुनें! 📸"); 
-          return;
-      }
-      
-      if(!GEMINI_API_KEY || GEMINI_API_KEY === 'यहाँ_अपनी_API_KEY_डालें') {
-          alert("⚠️ API Key सही से नहीं डाली गई है।"); 
-          return;
-      }
-
-      aiBtn.innerText = "पर्ची पढ़ रहा हूँ... कृपया रुकें ⏳"; 
-      aiBtn.disabled = true;
+      aiBtn.innerText = "पर्ची पढ़ रहा हूँ... कृपया रुकें ⏳"; aiBtn.disabled = true;
 
       const file = fileInput.files[0];
       const reader = new FileReader();
 
       reader.onloadend = async function() {
           const base64Data = reader.result.split(',')[1];
-          const promptText = `Analyze this milk collection receipt (parchi). Extract the following details and return ONLY a valid JSON object without any markdown formatting or code blocks.
-          Fields:
-          - name: Farmer's name (string, translate to English if in Hindi)
-          - fat: FAT percentage (number)
-          - snf: SNF percentage (number)
-          - litre: Quantity in litres (number)
-          - total: Total amount in rupees (number)
-          Example format: {"name": "Adarsh", "fat": 6.5, "snf": 8.5, "litre": 5.2, "total": 200}`;
+          const promptText = `Analyze this milk collection receipt (parchi). Extract the following details and return ONLY a valid JSON object without any markdown formatting or code blocks. Fields: - name: Farmer's name (string, translate to English if in Hindi) - fat: FAT percentage (number) - snf: SNF percentage (number) - litre: Quantity in litres (number) - total: Total amount in rupees (number). Example format: {"name": "Adarsh", "fat": 6.5, "snf": 8.5, "litre": 5.2, "total": 200}`;
 
           try {
-              const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
-                  method: 'POST',
-                  headers: {'Content-Type': 'application/json'},
-                  body: JSON.stringify({
-                      contents: [{
-                          parts: [
-                              {text: promptText},
-                              {inline_data: {mime_type: file.type, data: base64Data}}
-                          ]
-                      }]
-                  })
+              const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                  method: 'POST', headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({ contents: [{ parts: [ {text: promptText}, {inline_data: {mime_type: file.type, data: base64Data}} ] }] })
               });
 
               const result = await response.json();
-              
-              if(result.error) {
-                  alert("Google API Error: " + result.error.message);
-                  return;
-              }
+              if(result.error) { alert("Google API Error: " + result.error.message); return; }
 
               let aiText = result.candidates[0].content.parts[0].text;
-              
               aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
               const extractedData = JSON.parse(aiText);
 
-              // डिब्बों में डेटा भरना
               if(extractedData.name) document.getElementById('admName').value = extractedData.name;
               if(extractedData.fat) document.getElementById('admFat').value = extractedData.fat;
               if(extractedData.snf) document.getElementById('admSnf').value = extractedData.snf;
@@ -1315,16 +912,12 @@
               if(extractedData.total) document.getElementById('admTotal').value = extractedData.total;
 
               alert("✅ पर्ची स्कैन हो गई! कृपया एक बार डेटा चेक करें और 'डेटा सुरक्षित सेव करें' बटन दबाएं।");
-          } catch(e) {
-              console.error("AI Error:", e);
-              alert("स्कैन करने में समस्या आई। फोटो साफ़ खींचें या इंटरनेट चेक करें।");
-          } finally {
-              aiBtn.innerText = "📸 पर्ची स्कैन करें"; 
-              aiBtn.disabled = false;
-          }
+          } catch(e) { alert("स्कैन करने में समस्या आई। फोटो साफ़ खींचें या इंटरनेट चेक करें।"); } 
+          finally { aiBtn.innerText = "📸 पर्ची स्कैन करें"; aiBtn.disabled = false; }
       };
       reader.readAsDataURL(file);
   }
 </script>
 </body>
 </html>
+
