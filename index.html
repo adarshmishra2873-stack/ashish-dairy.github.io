@@ -296,14 +296,14 @@
   <span class="whatsapp-tooltip">WhatsApp करें</span>
 </a>
 
-<div class="ai-chat-btn" onclick="toggleChat()" title="AI डॉक्टर से पूछें">👨‍⚕️</div>
+<div class="ai-chat-btn" onclick="toggleChat()" title="AI doctor">👨‍⚕️</div>
 <div class="ai-chat-window" id="aiChatWindow">
   <div class="ai-chat-header">
     <span>🐄 AI पशु डॉक्टर</span>
     <span onclick="toggleChat()" style="cursor:pointer; font-size:24px; line-height: 1;">&times;</span>
   </div>
   <div class="ai-chat-body" id="chatBody">
-    <div class="msg msg-ai">नमस्ते किसान भाई! 🙏 मैं आशीष मिश्रा मिल्क सेंटर का AI असिस्टेंट हूँ。<br><br>आप पशुओं की सेहत, बीमारियों या दूध बढ़ाने के तरीकों के बारे में कोई भी सवाल लिख कर या <b>माइक (🎤) दबाकर</b> पूछ सकते हैं।</div>
+    <div class="msg msg-ai">नमस्ते किसान भाई! 🙏 मैं आशीष मिश्रा मिल्क सेंटर का AI असिस्टेंट हूँ।<br><br>आप पशुओं की सेहत, बीमारियों या दूध बढ़ाने के तरीकों के बारे में कोई भी सवाल लिख कर या <b>माइक (🎤) दबाकर</b> पूछ सकते हैं।</div>
   </div>
   <div class="ai-chat-input">
     <input type="text" id="chatInput" placeholder="अपना सवाल यहाँ लिखें..." onkeypress="if(event.key === 'Enter') sendAiMsg()">
@@ -915,7 +915,7 @@
                       'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({
-                      model: "openrouter/free", // स्कैनर के लिए यह सही है क्योंकि इसे फोटो देखनी होती है
+                      model: "google/gemini-2.0-flash-lite-preview-02-05:free", // स्कैनर के लिए यह सही है क्योंकि इसे फोटो देखनी होती है
                       messages: [
                           {
                               role: "user",
@@ -950,3 +950,4 @@
 </script>
 </body>
 </html>
+
