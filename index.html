@@ -1096,71 +1096,78 @@
       }
   });
 
-  // CSV लिंक से किसान का हिसाब खोजने वाला कोड
-  async function fetchFarmerData() {
-      const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
-      const resultArea = document.getElementById('resultArea');
-      const recordBody = document.getElementById('recordBody');
-      const errorMsg = document.getElementById('errorMsg');
-      const totalSumText = document.getElementById('totalSumText');
-
-      if(searchInput === "") {
-          alert("कृपया किसान का नाम या ID डालें!");
-          return;
-      }
-
-      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4i-l_zaHz77hSLho42OBkWbgefC7vvl5VbityxOvE1EBpY7dQkeGRhPsiFq9HQ67u_0jHum3dBu9E/pub?output=csv";
-
-      try {
-          const response = await fetch(csvUrl);
-          const data = await response.text();
-          const rows = data.split('\n');
-          
-          recordBody.innerHTML = "";
-          let recordFound = false;
-          let totalAmount = 0;
-
-          for(let i = 1; i < rows.length; i++) {
-              const cols = rows[i].split(',');
-              if(cols.length > 2) {
-                  const farmerName = (cols[1] || "").trim().toLowerCase();
-                  if(farmerName.includes(searchInput) && searchInput.length > 2 || farmerName === searchInput) {
-                      recordFound = true;
-                      
-                      const tr = document.createElement('tr');
-                      tr.innerHTML = `
-                          <td>${cols[2] || "-"}</td>
-                          <td>${cols[3] || "-"}</td>
-                          <td>${cols[4] || "0"} L</td>
-                          <td>${cols[5] || "-"}</td>
-                          <td>${cols[6] || "-"}</td>
-                          <td style="font-weight:bold;">₹ ${cols[7] || "0"}</td>
-                      `;
-                      recordBody.appendChild(tr);
-                      totalAmount += parseFloat(cols[7]) || 0;
-                  }
-              }
-          }
-
-          if(recordFound) {
-              errorMsg.style.display = "none";
-              resultArea.style.display = "block";
-              totalSumText.innerText = `कुल जमा राशि: ₹ ${totalAmount.toFixed(2)}`;
-          } else {
-              resultArea.style.display = "none";
-              errorMsg.style.display = "block";
-          }
-
-      } catch(error) {
-          console.log(error);
-          alert("डेटा लोड करने में समस्या आ रही है। कृपया इंटरनेट चेक करें।");
-      }
-  }
-
-  // === ADMIN PANEL SCRIPT ===
-  // मास्टर Web App URL 
+  // === मास्टर Web App URL ===
   const masterURL = 'https://script.google.com/macros/s/AKfycbxHDyH6yhEH43n-_WSCcVl5h4RwwlHOI_cZhumEeM1Cv6IPyddBcxCf9Wn4hbsoxXx_/exec';
 
+  // === 1. किसान का हिसाब खोजने वाला लाइव फंक्शन (सिर्फ देखने के लिए) ===
+  async function fetchFarmerData() {
+    const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+    const resultArea = document.getElementById('resultArea');
+    const recordBody = document.getElementById('recordBody');
+    const errorMsg = document.getElementById('errorMsg');
+    const totalSumText = document.getElementById('totalSumText');
+
+    if(searchInput === "") {
+        alert("कृपया किसान का नाम डालें!");
+        return;
+    }
+
+    recordBody.innerHTML = "<tr><td colspan='6' style='text-align:center;'>रिकॉर्ड खोजा जा रहा है... ⏳</td></tr>";
+    resultArea.style.display = "block";
+    errorMsg.style.display = "none";
+
+    try {
+        const response = await fetch(masterURL);
+        const data = await response.json();
+        
+        recordBody.innerHTML = "";
+        let recordFound = false;
+        let totalAmount = 0;
+
+        for(let i = 1; i < data.length; i++) {
+            const r = data[i];
+            if(r.length > 1) {
+                const farmerName = (r[1] || "").toString().trim().toLowerCase();
+                if(farmerName.includes(searchInput) && searchInput.length > 2 || farmerName === searchInput) {
+                    recordFound = true;
+                    
+                    let dateStr = r[0] || "-";
+                    if(typeof dateStr === 'string' && dateStr.includes('T')) {
+                        dateStr = dateStr.split('T')[0]; // T के आगे का हिस्सा हटा दें
+                    }
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${dateStr}</td>
+                        <td style="text-align:center;">-</td>
+                        <td>${r[4] || "0"} L</td>
+                        <td>${r[2] || "-"}</td>
+                        <td>${r[3] || "-"}</td>
+                        <td style="font-weight:bold; color: #28a745;">₹ ${r[5] || "0"}</td>
+                    `;
+                    recordBody.appendChild(tr);
+                    totalAmount += parseFloat(r[5]) || 0;
+                }
+            }
+        }
+
+        if(recordFound) {
+            errorMsg.style.display = "none";
+            resultArea.style.display = "block";
+            totalSumText.innerText = `कुल जमा राशि: ₹ ${totalAmount.toFixed(2)}`;
+        } else {
+            resultArea.style.display = "none";
+            errorMsg.style.display = "block";
+        }
+
+    } catch(error) {
+        console.log(error);
+        alert("डेटा लोड करने में समस्या आ रही है। कृपया इंटरनेट चेक करें।");
+        resultArea.style.display = "none";
+    }
+  }
+
+  // === 2. एडमिन का काम (नया डेटा डालना) ===
   async function adminSubmit() {
       const btn = document.getElementById('saveBtn');
       const params = {
@@ -1203,6 +1210,7 @@
       }
   }
 
+  // === 3. एडमिन का काम (डेटा मिटाना) ===
   async function deleteRow(index) {
       if(!confirm("क्या आप वाकई इस रिकॉर्ड को मिटाना चाहते हैं?")) return;
 
@@ -1219,6 +1227,7 @@
       }
   }
 
+  // === 4. एडमिन पैनल में डेटा दिखाना (डिलीट बटन के साथ) ===
   async function loadLiveRecords() {
       const tableBody = document.getElementById('tableBodyContent');
       tableBody.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:20px;'>डेटा लोड हो रहा है... ⏳</td></tr>";
@@ -1230,9 +1239,14 @@
           tableBody.innerHTML = ""; 
           for (let i = 1; i < data.length; i++) {
               const row = data[i];
+              let dateStr = row[0] || "-";
+              if(typeof dateStr === 'string' && dateStr.includes('T')) {
+                  dateStr = dateStr.split('T')[0];
+              }
+              
               tableBody.innerHTML += `
                   <tr style="border-bottom: 1px solid #eee;">
-                      <td style="padding: 12px;">${row[0] || '-'}</td>
+                      <td style="padding: 12px;">${dateStr}</td>
                       <td style="padding: 12px; font-weight:bold;">${row[1] || '-'}</td>
                       <td style="padding: 12px;">${row[2]} / ${row[3]}</td>
                       <td style="padding: 12px;">${row[4]} L</td>
@@ -1248,7 +1262,7 @@
       }
   }
 
-  // === SECRET ADMIN LOGIN (Ad29) ===
+  // === 5. SECRET ADMIN LOGIN (Ad29) ===
   function openAdmin(){
       var p = prompt("Admin Security PIN Dalein:");
       if(p === "Ad29"){
@@ -1262,4 +1276,3 @@
 </script>
 </body>
 </html>
-
