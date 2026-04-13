@@ -706,7 +706,7 @@
       try {
           const sysPrompt = "तुम 'नाहिल मिल्क सेंटर' (संचालक: आशीष मिश्रा) के एक AI पशु डॉक्टर और डेयरी असिस्टेंट हो। तुम्हारा काम किसानों को गाय/भैंस की बीमारियों, दूध बढ़ाने के तरीकों और चारे के बारे में सही और आसान हिंदी में जानकारी देना है। जवाब छोटे, आदरपूर्ण और सटीक होने चाहिए।";
           
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
@@ -893,7 +893,7 @@
           const promptText = `Analyze this milk collection receipt (parchi). Extract the following details and return ONLY a valid JSON object without any markdown formatting or code blocks. Fields: - name: Farmer's name (string, translate to English if in Hindi) - fat: FAT percentage (number) - snf: SNF percentage (number) - litre: Quantity in litres (number) - total: Total amount in rupees (number). Example format: {"name": "Adarsh", "fat": 6.5, "snf": 8.5, "litre": 5.2, "total": 200}`;
 
           try {
-              const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+              const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                   method: 'POST', headers: {'Content-Type': 'application/json'},
                   body: JSON.stringify({ contents: [{ parts: [ {text: promptText}, {inline_data: {mime_type: file.type, data: base64Data}} ] }] })
               });
