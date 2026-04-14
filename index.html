@@ -880,7 +880,7 @@
                         if(dateStr.includes(' | ')) { const parts = dateStr.split(' | '); dateStr = parts[0]; shiftStr = parts[1]; }
                         if(dateStr.includes('T')) { dateStr = dateStr.split('T')[0]; }
                         let dParts1 = dateStr.split('-');
-                        if(dParts1.length === 3 && dParts1[0].length === 4) { dateStr = dParts1[2] + "-" + dParts1[1] + "-" + dParts1[0]; }
+                        if(dParts1.length === 3 && dParts1[0].length === 4) { dateStr = dParts1[2] + "/" + dParts1[1] + "/" + dParts1[0]; }
                     }
                     const tr = document.createElement('tr');
                     tr.innerHTML = `<td>${dateStr}</td><td style="text-align:center; font-weight:bold; color: #2C5F8A;">${shiftStr}</td><td>${r[4] || "0"} L</td><td>${r[2] || "-"}</td><td>${r[3] || "-"}</td><td style="font-weight:bold; color: #28a745;">₹ ${r[5] || "0"}</td>`;
@@ -944,7 +944,12 @@
               if(typeof dateStr === 'string') {
                   if(dateStr.includes(' | ')) { const parts = dateStr.split(' | '); dateStr = parts[0]; shiftStr = parts[1]; }
                   if(dateStr.includes('T')) { dateStr = dateStr.split('T')[0]; }
-                  let dParts2 = dateStr.split('-'); if(dParts2.length === 3 && dParts2[0].length === 4) { dateStr = dParts2[2] + "-" + dParts2[1] + "-" + dParts2[0]; }
+                  let dParts2 = dateStr.split('-'); 
+                  if(dParts2.length === 3 && dParts2[0].length === 4) { 
+                      dateStr = dParts2[2] + "/" + dParts2[1] + "/" + dParts2[0]; 
+                  } else if (dParts2.length === 3) {
+                      dateStr = dParts2.join('/');
+                  }
               }
 
               let litre = parseFloat(row[4]) || 0;
@@ -968,7 +973,10 @@
           localStorage.setItem('ashishDairyDailyTotals', JSON.stringify(savedTotals));
 
           if(dailyTotalBody) {
-              let totalKeys = Object.keys(savedTotals).sort((a,b) => new Date(b.split('-').reverse().join('-')) - new Date(a.split('-').reverse().join('-')));
+              let totalKeys = Object.keys(savedTotals).sort((a,b) => {
+                  let pA = a.split('/'); let pB = b.split('/');
+                  return new Date(pB[2]+"-"+pB[1]+"-"+pB[0]) - new Date(pA[2]+"-"+pA[1]+"-"+pA[0]);
+              });
               for (const date of totalKeys) {
                   const totals = savedTotals[date];
                   dailyTotalBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;">
@@ -1058,10 +1066,16 @@
           for (let i = data.length - 1; i >= 1; i--) {
               const entry = data[i];
               
-              // Date fix
+              // Date fix to DD/MM/YYYY
               let rowDate = entry[0] || "-";
               if(typeof rowDate === 'string' && rowDate.includes('T')) {
                   rowDate = rowDate.split('T')[0];
+              }
+              let dParts = rowDate.split('-');
+              if(dParts.length === 3 && dParts[0].length === 4) {
+                  rowDate = dParts[2] + "/" + dParts[1] + "/" + dParts[0];
+              } else if(dParts.length === 3) {
+                  rowDate = dParts.join('/');
               }
 
               // Time fix 
@@ -1121,12 +1135,10 @@
       });
   }
 
-  // PDF Download Function (New HTML2PDF for Clear Hindi Fonts)
+  // PDF Download Function (सुंदर रसीद)
   function downloadLedgerPDF() {
-      // असली टेबल को छेड़े बिना उसका एक क्लोन (कॉपी) बनाएँ
       let tableClone = document.getElementById('ledgerTable').cloneNode(true);
       
-      // क्लोन वाली टेबल से आखिरी कॉलम (ऐक्शन/Delete/WA) को हटा दें ताकि प्रिंट में बटन ना आएं
       let rows = tableClone.rows;
       for (let i = 0; i < rows.length; i++) {
           if(rows[i].cells.length > 4) {
@@ -1134,24 +1146,29 @@
           }
       }
 
-      // प्रिंट के लिए एक सुंदर डिब्बा बनाएँ
       let printDiv = document.createElement('div');
       printDiv.style.padding = '20px';
       printDiv.style.background = '#ffffff';
+      printDiv.style.color = '#000000';
       printDiv.innerHTML = '<h2 style="text-align:center; color:#1a3a5c; margin-bottom:20px; font-family:sans-serif;">Ashish Dairy - Advance & Ledger Report</h2>';
       printDiv.appendChild(tableClone);
 
-      // PDF की सेटिंग (बिल्कुल साफ़ फोटो क्वालिटी)
+      // बॉडी में छुपा कर जोड़ना (ताकि PDF बिल्कुल साफ़ आए)
+      printDiv.style.position = 'absolute';
+      printDiv.style.top = '-9999px';
+      document.body.appendChild(printDiv);
+
       let opt = {
           margin:       0.5,
           filename:     'AshishDairy_Ledger_Report.pdf',
           image:        { type: 'jpeg', quality: 1 },
-          html2canvas:  { scale: 2 },
+          html2canvas:  { scale: 2, useCORS: true },
           jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
 
-      // PDF डाउनलोड शुरू करें
-      html2pdf().set(opt).from(printDiv).save();
+      html2pdf().set(opt).from(printDiv).save().then(() => {
+          document.body.removeChild(printDiv);
+      });
   }
 
   // WhatsApp Send Function
