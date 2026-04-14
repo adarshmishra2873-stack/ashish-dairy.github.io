@@ -303,7 +303,7 @@
     <span onclick="toggleChat()" style="cursor:pointer; font-size:24px; line-height: 1;">&times;</span>
   </div>
   <div class="ai-chat-body" id="chatBody">
-    <div class="msg msg-ai">नमस्ते किसान भाई! 🙏 मैं आशीष मिश्रा मिल्क सेंटर का AI असिस्टेंट हूँ。<br><br>आप पशुओं की सेहत, बीमारियों या दूध बढ़ाने के तरीकों के बारे बारे में कोई भी सवाल लिख कर या <b>माइक (🎤) दबाकर</b> पूछ सकते हैं।</div>
+    <div class="msg msg-ai">नमस्ते किसान भाई! 🙏 मैं आशीष मिश्रा मिल्क सेंटर का AI असिस्टेंट हूँ。<br><br>आप पशुओं की सेहत, बीमारियों या दूध बढ़ाने के तरीकों के बारे में कोई भी सवाल लिख कर या <b>माइक (🎤) दबाकर</b> पूछ सकते हैं।</div>
   </div>
   <div class="ai-chat-input">
     <input type="text" id="chatInput" placeholder="अपना सवाल यहाँ लिखें..." onkeypress="if(event.key === 'Enter') sendAiMsg()">
@@ -362,7 +362,7 @@
     <div class="hero-content">
       <div class="hero-badge">🏅 ग्राम नाहिल का विश्वसनीय केंद्र</div>
       <h1 class="hero-title">नाहिल<br><span>मिल्क कलेक्शन</span><br>सेंटर</h1>
-      <p class="hero-sub">आपके घर का ताजा दूध, हमारे यहाँ सबसे अच्छे दाम पर।<br>आशीष मिश्रा द्वारा संचालित — ईमानदारी और पारदर्शिता के साथ।</p>
+      <p class="hero-sub">आपके घर का ताजा दूध, हमारे यहाँ सबसे अच्छे दाम पर।<br>आशीष मिश्रा द्वारा संचालित — ईमानदारी और पारदर्शिता के साथ。</p>
       <div class="hero-btns">
         <a href="#record" class="btn-primary">📝 अपना हिसाब देखें</a>
         <a href="#rates" class="btn-outline">💰 आज का रेट देखें</a>
@@ -625,6 +625,35 @@
           </tr>
         </thead>
         <tbody id="tableBodyContent" style="color: #000000 !important; background: #ffffff;"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="max-width: 900px; margin: 40px auto; background: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid #ddd;">
+    <h2 style="text-align: center; color: #1a3a5c !important; margin-bottom: 25px; font-weight: bold; font-family: sans-serif;">📓 किसान नकद / एडवांस (Ledger)</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">किसान का नाम</label><input type="text" id="ledgerName" placeholder="नाम लिखें" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">तारीख</label><input type="date" id="ledgerDate" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">समय</label><input type="time" id="ledgerTime" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+      <div style="display: flex; flex-direction: column;"><label style="color: #1a3a5c; font-weight: bold; margin-bottom: 5px;">रकम (₹)</label><input type="number" id="ledgerAmount" placeholder="0" style="padding:12px; border:2px solid #1a3a5c; border-radius:5px; color: #000 !important; background: #fff;"></div>
+    </div>
+    <button onclick="addLedgerEntry()" style="width: 100%; margin-top: 30px; padding: 15px; background: var(--gold); color: var(--blue); border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">➕ खाता में दर्ज करें</button>
+  </div>
+
+  <div style="max-width: 1100px; margin: 40px auto 0; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid var(--gold);">
+    <h3 style="text-align: center; padding: 20px; background: var(--gold); color: var(--blue); margin: 0; font-family: sans-serif; font-weight: bold;">📖 एडवांस / नकद रिकॉर्ड लिस्ट</h3>
+    <div class="table-responsive">
+      <table class="rates-table" style="min-width: 600px; margin-bottom: 0;">
+        <thead>
+          <tr style="background: #fdf6e3; border-bottom: 2px solid var(--gold);">
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">तारीख</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">समय</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">नाम</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold;">रकम (₹)</th>
+            <th style="padding: 15px; color: #1a3a5c; font-weight: bold; text-align:center;">ऐक्शन</th>
+          </tr>
+        </thead>
+        <tbody id="ledgerTableBody" style="color: #000000 !important; background: #ffffff;"></tbody>
       </table>
     </div>
   </div>
@@ -959,10 +988,88 @@
       }
   }
 
-  // === 7. SECRET ADMIN LOGIN (Ad29) ===
+  // === 7. किसान खाता (LEDGER) फंक्शन ===
+  function addLedgerEntry() {
+      const name = document.getElementById('ledgerName').value.trim();
+      const date = document.getElementById('ledgerDate').value;
+      const time = document.getElementById('ledgerTime').value;
+      const amount = document.getElementById('ledgerAmount').value;
+
+      if (!name || !date || !time || !amount) {
+          alert("कृपया सभी जानकारी (नाम, तारीख, समय और रकम) भरें!");
+          return;
+      }
+
+      let ledgerData = JSON.parse(localStorage.getItem('ashishDairyLedger') || '[]');
+      const entry = {
+          id: Date.now(), 
+          name: name,
+          date: date,
+          time: time,
+          amount: parseFloat(amount)
+      };
+
+      ledgerData.push(entry);
+      localStorage.setItem('ashishDairyLedger', JSON.stringify(ledgerData));
+
+      alert("खाता में सफलतापूर्वक दर्ज हो गया!");
+      
+      document.getElementById('ledgerName').value = "";
+      document.getElementById('ledgerDate').value = "";
+      document.getElementById('ledgerTime').value = "";
+      document.getElementById('ledgerAmount').value = "";
+
+      loadLedgerRecords();
+  }
+
+  function loadLedgerRecords() {
+      const ledgerBody = document.getElementById('ledgerTableBody');
+      if (!ledgerBody) return;
+
+      let ledgerData = JSON.parse(localStorage.getItem('ashishDairyLedger') || '[]');
+      ledgerBody.innerHTML = "";
+
+      if (ledgerData.length === 0) {
+          ledgerBody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:20px;'>कोई रिकॉर्ड नहीं है।</td></tr>";
+          return;
+      }
+
+      ledgerData.sort((a, b) => b.id - a.id);
+
+      ledgerData.forEach(entry => {
+          let dateParts = entry.date.split('-');
+          let nicelyFormattedDate = dateParts.length === 3 ? `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}` : entry.date;
+
+          ledgerBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 12px; font-weight:bold;">${nicelyFormattedDate}</td>
+              <td style="padding: 12px;">${entry.time}</td>
+              <td style="padding: 12px; color: #2C5F8A; font-weight:bold;">${entry.name}</td>
+              <td style="padding: 12px; color: #dc3545; font-weight:bold;">₹ ${entry.amount.toFixed(2)}</td>
+              <td style="padding: 12px; text-align:center;">
+                  <button onclick="deleteLedgerEntry(${entry.id})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button>
+              </td>
+          </tr>`;
+      });
+  }
+
+  function deleteLedgerEntry(id) {
+      if(confirm("क्या आप वाकई इस रिकॉर्ड को मिटाना चाहते हैं?")) {
+          let ledgerData = JSON.parse(localStorage.getItem('ashishDairyLedger') || '[]');
+          ledgerData = ledgerData.filter(entry => entry.id !== id);
+          localStorage.setItem('ashishDairyLedger', JSON.stringify(ledgerData));
+          loadLedgerRecords();
+      }
+  }
+
+  // === 8. SECRET ADMIN LOGIN (Ad29) ===
   function openAdmin(){
       var p = prompt("Admin Security PIN Dalein:");
-      if(p === "Ad29"){ document.getElementById('admin-panel').style.display = 'block'; window.location.href = '#admin-panel'; loadLiveRecords(); } 
+      if(p === "Ad29"){ 
+          document.getElementById('admin-panel').style.display = 'block'; 
+          window.location.href = '#admin-panel'; 
+          loadLiveRecords(); 
+          loadLedgerRecords(); 
+      } 
       else if(p !== null){ alert("Galat Password!"); }
   }
 
