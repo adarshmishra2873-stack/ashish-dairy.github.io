@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+Devanagari:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <script src="data.js"></script>
 
   <style>
@@ -686,7 +688,7 @@
       <div class="footer-col">
         <h5>Quick Links</h5>
         <ul>
-          <li><a href="#home">🏠 होम</a></li><li><a href="#record">📝 অনলাইনে डायरी</a></li><li><a href="#services">⚙️ सेवाएं</a></li><li><a href="#rates">💰 आज का रेट</a></li><li><a href="#contact">📞 संपर्क</a></li>
+          <li><a href="#home">🏠 होम</a></li><li><a href="#record">📝 ऑनलाइन डायरी</a></li><li><a href="#services">⚙️ सेवाएं</a></li><li><a href="#rates">💰 आज का रेट</a></li><li><a href="#contact">📞 संपर्क</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1047,13 +1049,13 @@
           const data = await response.json();
           ledgerBody.innerHTML = "";
 
-          if (data.length <= 0) {
+          if (data.length <= 1) {
               ledgerBody.innerHTML = "<tr><td colspan='5' style='text-align:center; padding:20px;'>खाते में कोई रिकॉर्ड नहीं है।</td></tr>";
               return;
           }
 
-          // उल्टे क्रम में दिखाएं (नया सबसे ऊपर)
-          for (let i = data.length - 1; i >= 0; i--) {
+          // उल्टे क्रम में दिखाएं (नया सबसे ऊपर), हेडिंग (i=0) को इग्नोर करें (i >= 1)
+          for (let i = data.length - 1; i >= 1; i--) {
               const entry = data[i];
               
               // Date fix
@@ -1062,7 +1064,7 @@
                   rowDate = rowDate.split('T')[0];
               }
 
-              // Time fix (Bug resolved here)
+              // Time fix 
               let rowTime = entry[1] || "-";
               if (typeof rowTime === 'string' && rowTime.includes('T')) {
                   let d = new Date(rowTime);
@@ -1088,7 +1090,7 @@
                   <td style="padding: 12px; font-size:13px; color: grey;">${rowReason}</td>
                   <td style="padding: 12px; text-align:center; display:flex; gap:10px; justify-content:center;">
                       <button onclick="sendWA('${rowName}', '${rowAmt}', '${rowType}', '${rowReason}')" style="background:#25D366; border:none; color:#fff; border-radius:5px; padding:5px 8px; cursor:pointer; font-size:12px; font-weight:bold;" title="WhatsApp पर भेजें">WA</button>
-                      <button onclick="deleteLedgerRow(${i + 2})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button>
+                      <button onclick="deleteLedgerRow(${i + 1})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button>
                   </td>
               </tr>`;
           }
@@ -1119,13 +1121,37 @@
       });
   }
 
-  // PDF Download Function (सुंदर रसीद)
+  // PDF Download Function (New HTML2PDF for Clear Hindi Fonts)
   function downloadLedgerPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text("Ashish Dairy - Advance & Ledger Report", 14, 15);
-      doc.autoTable({ html: '#ledgerTable', startY: 20 });
-      doc.save("AshishDairy_Ledger_Report.pdf");
+      // असली टेबल को छेड़े बिना उसका एक क्लोन (कॉपी) बनाएँ
+      let tableClone = document.getElementById('ledgerTable').cloneNode(true);
+      
+      // क्लोन वाली टेबल से आखिरी कॉलम (ऐक्शन/Delete/WA) को हटा दें ताकि प्रिंट में बटन ना आएं
+      let rows = tableClone.rows;
+      for (let i = 0; i < rows.length; i++) {
+          if(rows[i].cells.length > 4) {
+              rows[i].deleteCell(-1);
+          }
+      }
+
+      // प्रिंट के लिए एक सुंदर डिब्बा बनाएँ
+      let printDiv = document.createElement('div');
+      printDiv.style.padding = '20px';
+      printDiv.style.background = '#ffffff';
+      printDiv.innerHTML = '<h2 style="text-align:center; color:#1a3a5c; margin-bottom:20px; font-family:sans-serif;">Ashish Dairy - Advance & Ledger Report</h2>';
+      printDiv.appendChild(tableClone);
+
+      // PDF की सेटिंग (बिल्कुल साफ़ फोटो क्वालिटी)
+      let opt = {
+          margin:       0.5,
+          filename:     'AshishDairy_Ledger_Report.pdf',
+          image:        { type: 'jpeg', quality: 1 },
+          html2canvas:  { scale: 2 },
+          jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+
+      // PDF डाउनलोड शुरू करें
+      html2pdf().set(opt).from(printDiv).save();
   }
 
   // WhatsApp Send Function
