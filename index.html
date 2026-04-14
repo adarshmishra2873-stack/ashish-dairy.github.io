@@ -8,9 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+Devanagari:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-
   <script src="data.js"></script>
 
   <style>
@@ -689,7 +686,7 @@
       <div class="footer-col">
         <h5>Quick Links</h5>
         <ul>
-          <li><a href="#home">🏠 होम</a></li><li><a href="#record">📝 ऑनलाइन डायरी</a></li><li><a href="#services">⚙️ सेवाएं</a></li><li><a href="#rates">💰 आज का रेट</a></li><li><a href="#contact">📞 संपर्क</a></li>
+          <li><a href="#home">🏠 होम</a></li><li><a href="#record">📝 অনলাইনে डायरी</a></li><li><a href="#services">⚙️ सेवाएं</a></li><li><a href="#rates">💰 आज का रेट</a></li><li><a href="#contact">📞 संपर्क</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1058,16 +1055,30 @@
           // उल्टे क्रम में दिखाएं (नया सबसे ऊपर)
           for (let i = data.length - 1; i >= 0; i--) {
               const entry = data[i];
-              let rowDate = entry[0] || "-";
-              if(typeof rowDate === 'string' && rowDate.includes('T')) rowDate = rowDate.split('T')[0];
               
+              // Date fix
+              let rowDate = entry[0] || "-";
+              if(typeof rowDate === 'string' && rowDate.includes('T')) {
+                  rowDate = rowDate.split('T')[0];
+              }
+
+              // Time fix (Bug resolved here)
               let rowTime = entry[1] || "-";
+              if (typeof rowTime === 'string' && rowTime.includes('T')) {
+                  let d = new Date(rowTime);
+                  if (!isNaN(d.getTime())) {
+                      rowTime = d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+                  } else {
+                      rowTime = rowTime.split('T')[1].substring(0, 5);
+                  }
+              }
+              
               let rowName = entry[2] || "-";
               let rowAmt = parseFloat(entry[3]) || 0;
               let rowType = entry[4] || "";
               let rowReason = entry[5] || "";
 
-              // लाल (Out) और हरा (In) रंग का लॉजिक 100% परफेक्ट
+              // लाल (Out) और हरा (In) रंग का लॉजिक
               let colorStyle = rowType.includes('Out') || rowType.includes('दिया') ? 'color: #dc3545;' : 'color: #28a745;';
 
               ledgerBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;">
