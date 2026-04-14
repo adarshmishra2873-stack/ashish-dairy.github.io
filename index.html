@@ -608,13 +608,11 @@
             <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">तारीख</th>
             <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">कुल दूध (Litre)</th>
             <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">कुल रकम (₹)</th>
-            <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">ऐक्शन</th>
           </tr>
         </thead>
         <tbody id="dailyTotalBody" style="color: #000; background: #fff; text-align: center;"></tbody>
       </table>
     </div>
-    <p style="text-align:center;color:var(--muted);font-size:12px;margin:10px;">⚠️ नोट: नीचे से किसी किसान की पर्ची डिलीट करने पर भी यह 'कुल हिसाब' डिलीट नहीं होगा। इसे डिलीट करने के लिए लाल बटन दबाएं।</p>
   </div>
 
   <div style="max-width: 1100px; margin: 40px auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 2px solid #1a3a5c;">
@@ -725,8 +723,21 @@
   const masterURL = 'https://script.google.com/macros/s/AKfycbxHDyH6yhEH43n-_WSCcVl5h4RwwlHOI_cZhumEeM1Cv6IPyddBcxCf9Wn4hbsoxXx_/exec';
   const contactURL = 'https://script.google.com/macros/s/AKfycbzIWhDBLjeAxHx2-kJ13IonZxsjha2UoEO0jqvLUWsF8X3-oN9hXMIlT4LQgAAW4b9ieA/exec';
   
-  // 👇 आपका नया लेजर (खाताबुक) Google Sheet URL 👇
+  // आपका नया लेजर (खाताबुक) Google Sheet URL
   const ledgerURL = 'https://script.google.com/macros/s/AKfycbzjMjHRJpQDqvftgC1VPiL1OaqqNZCYUwHN9mME_X1zwj2-zuqADREupnd4xZRpE9vUbg/exec';
+
+  // Helper function to format dates strictly to DD/MM/YYYY
+  function formatDateToDDMMYYYY(rawStr) {
+      if (!rawStr) return "-";
+      let str = rawStr.toString();
+      if (str.includes('T')) str = str.split('T')[0];
+      let parts = str.split('-');
+      if (parts.length === 3) {
+          if (parts[0].length === 4) return `${parts[2]}/${parts[1]}/${parts[0]}`; // YYYY-MM-DD -> DD/MM/YYYY
+          return `${parts[0]}/${parts[1]}/${parts[2]}`; // Assuming DD-MM-YYYY
+      }
+      return str.replace(/-/g, '/');
+  }
 
   function toggleMenu(){
     const m = document.getElementById('mobileMenu');
@@ -875,13 +886,9 @@
                 const farmerName = (r[1] || "").toString().trim().toLowerCase();
                 if(farmerName.includes(searchInput) && searchInput.length > 2 || farmerName === searchInput) {
                     recordFound = true;
-                    let dateStr = r[0] || "-", shiftStr = "-";
-                    if(typeof dateStr === 'string') {
-                        if(dateStr.includes(' | ')) { const parts = dateStr.split(' | '); dateStr = parts[0]; shiftStr = parts[1]; }
-                        if(dateStr.includes('T')) { dateStr = dateStr.split('T')[0]; }
-                        let dParts1 = dateStr.split('-');
-                        if(dParts1.length === 3 && dParts1[0].length === 4) { dateStr = dParts1[2] + "/" + dParts1[1] + "/" + dParts1[0]; }
-                    }
+                    let dateStr = formatDateToDDMMYYYY(r[0]);
+                    let shiftStr = r[1] || "-";
+                    
                     const tr = document.createElement('tr');
                     tr.innerHTML = `<td>${dateStr}</td><td style="text-align:center; font-weight:bold; color: #2C5F8A;">${shiftStr}</td><td>${r[4] || "0"} L</td><td>${r[2] || "-"}</td><td>${r[3] || "-"}</td><td style="font-weight:bold; color: #28a745;">₹ ${r[5] || "0"}</td>`;
                     recordBody.appendChild(tr);
@@ -917,12 +924,16 @@
 
   // === 5. दूध एंट्री मिटाना ===
   async function deleteRow(index) {
-      if(!confirm("क्या आप वाकई इस दूध की पर्ची को मिटाना चाहते हैं?")) return;
-      try { await fetch(masterURL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({action: "delete", rowIndex: index}) }); alert("रिकॉर्ड सफलतापूर्वक हटा दिया गया!"); loadLiveRecords(); } 
+      if(!confirm("क्या आप वाकई इस दूध की पर्ची को मिटाना चाहते हैं? (टोटल भी कम हो जाएगा)")) return;
+      try { 
+          await fetch(masterURL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({action: "delete", rowIndex: index}) }); 
+          alert("रिकॉर्ड सफलतापूर्वक हटा दिया गया!"); 
+          loadLiveRecords(); 
+      } 
       catch (e) { alert("मिटाने में समस्या आई, इंटरनेट चेक करें।"); }
   }
 
-  // === 6. दूध का डेटा दिखाना और परमानेंट टोटल करना ===
+  // === 6. दूध का डेटा दिखाना और परमानेंट टोटल करना (FIXED) ===
   async function loadLiveRecords() {
       const tableBody = document.getElementById('tableBodyContent');
       const dailyTotalBody = document.getElementById('dailyTotalBody');
@@ -940,15 +951,16 @@
 
           for (let i = 1; i < data.length; i++) {
               const row = data[i];
-              let dateStr = row[0] || "-", shiftStr = "-";
+              let dateStr = row[0] || "-";
+              let shiftStr = "-";
+              
               if(typeof dateStr === 'string') {
-                  if(dateStr.includes(' | ')) { const parts = dateStr.split(' | '); dateStr = parts[0]; shiftStr = parts[1]; }
-                  if(dateStr.includes('T')) { dateStr = dateStr.split('T')[0]; }
-                  let dParts2 = dateStr.split('-'); 
-                  if(dParts2.length === 3 && dParts2[0].length === 4) { 
-                      dateStr = dParts2[2] + "/" + dParts2[1] + "/" + dParts2[0]; 
-                  } else if (dParts2.length === 3) {
-                      dateStr = dParts2.join('/');
+                  if(dateStr.includes(' | ')) { 
+                      const parts = dateStr.split(' | '); 
+                      dateStr = formatDateToDDMMYYYY(parts[0]); 
+                      shiftStr = parts[1]; 
+                  } else {
+                      dateStr = formatDateToDDMMYYYY(dateStr);
                   }
               }
 
@@ -962,30 +974,18 @@
               tableBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;"><td style="padding: 12px;">${dateStr}</td><td style="padding: 12px; color: #2C5F8A; font-weight:bold;">${shiftStr}</td><td style="padding: 12px; font-weight:bold;">${row[1] || '-'}</td><td style="padding: 12px;">${row[2]} / ${row[3]}</td><td style="padding: 12px;">${row[4]} L</td><td style="padding: 12px; color: #28a745; font-weight:bold;">₹ ${row[5]}</td><td style="padding: 12px; text-align:center;"><button onclick="deleteRow(${i})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button></td></tr>`;
           }
 
-          let savedTotals = JSON.parse(localStorage.getItem('ashishDairyDailyTotals') || '{}');
-          for (let date in sheetTotals) {
-              if (!savedTotals[date]) savedTotals[date] = { litre: 0, amount: 0 };
-              if (sheetTotals[date].amount > savedTotals[date].amount) {
-                  savedTotals[date].amount = sheetTotals[date].amount;
-                  savedTotals[date].litre = sheetTotals[date].litre;
-              }
-          }
-          localStorage.setItem('ashishDairyDailyTotals', JSON.stringify(savedTotals));
-
+          // DYNAMIC TOTAL CALCULATION (No LocalStorage caching, so it's 100% accurate with live sheet)
           if(dailyTotalBody) {
-              let totalKeys = Object.keys(savedTotals).sort((a,b) => {
+              let totalKeys = Object.keys(sheetTotals).sort((a,b) => {
                   let pA = a.split('/'); let pB = b.split('/');
                   return new Date(pB[2]+"-"+pB[1]+"-"+pB[0]) - new Date(pA[2]+"-"+pA[1]+"-"+pA[0]);
               });
               for (const date of totalKeys) {
-                  const totals = savedTotals[date];
+                  const totals = sheetTotals[date];
                   dailyTotalBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;">
                       <td style="padding: 12px; font-weight:bold; color: #1a3a5c;">${date}</td>
                       <td style="padding: 12px; font-weight:bold;">${totals.litre.toFixed(2)} L</td>
                       <td style="padding: 12px; font-weight:bold; color: #28a745;">₹ ${totals.amount.toFixed(2)}</td>
-                      <td style="padding: 12px; text-align:center;">
-                        <button onclick="deleteDailyTotal('${date}')" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="पूरा हिसाब मिटाएं">🗑️</button>
-                      </td>
                   </tr>`;
               }
           }
@@ -993,15 +993,6 @@
       } catch (e) { 
           tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center; color:red; padding:20px;'>रिकॉर्ड लोड नहीं हो सके।</td></tr>"; 
           if(dailyTotalBody) dailyTotalBody.innerHTML = "<tr><td colspan='4' style='text-align:center; color:red; padding:20px;'>हिसाब लोड नहीं हो सका।</td></tr>";
-      }
-  }
-
-  function deleteDailyTotal(dateStr) {
-      if(confirm(`क्या आप वाकई ${dateStr} का पूरा कुल हिसाब मिटाना चाहते हैं?\n(यह वापस नहीं आएगा)`)) {
-          let savedTotals = JSON.parse(localStorage.getItem('ashishDairyDailyTotals') || '{}');
-          delete savedTotals[dateStr];
-          localStorage.setItem('ashishDairyDailyTotals', JSON.stringify(savedTotals));
-          loadLiveRecords(); 
       }
   }
 
@@ -1065,28 +1056,25 @@
           // उल्टे क्रम में दिखाएं (नया सबसे ऊपर), हेडिंग (i=0) को इग्नोर करें (i >= 1)
           for (let i = data.length - 1; i >= 1; i--) {
               const entry = data[i];
+              if(!entry || !entry[0]) continue;
+              
+              let rawDateStr = entry[0].toString();
+              
+              // HEADING FIX: अगर गलती से हेडिंग आ जाए तो उसे इग्नोर करें
+              if(rawDateStr.includes('तारीख') || rawDateStr.includes('Date') || entry[2] === 'नाम (Farmer Name)') {
+                  continue;
+              }
               
               // Date fix to DD/MM/YYYY
-              let rowDate = entry[0] || "-";
-              if(typeof rowDate === 'string' && rowDate.includes('T')) {
-                  rowDate = rowDate.split('T')[0];
-              }
-              let dParts = rowDate.split('-');
-              if(dParts.length === 3 && dParts[0].length === 4) {
-                  rowDate = dParts[2] + "/" + dParts[1] + "/" + dParts[0];
-              } else if(dParts.length === 3) {
-                  rowDate = dParts.join('/');
-              }
+              let rowDate = formatDateToDDMMYYYY(rawDateStr);
 
               // Time fix 
-              let rowTime = entry[1] || "-";
-              if (typeof rowTime === 'string' && rowTime.includes('T')) {
-                  let d = new Date(rowTime);
-                  if (!isNaN(d.getTime())) {
-                      rowTime = d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-                  } else {
-                      rowTime = rowTime.split('T')[1].substring(0, 5);
-                  }
+              let rowTime = entry[1] ? entry[1].toString() : "-";
+              if (rowTime.includes('T')) {
+                  rowTime = rowTime.split('T')[1].substring(0, 5);
+              } else if (rowTime.includes('1899')) {
+                  rowTime = rowTime.split(' ')[4] || rowTime;
+                  if(rowTime.length > 5) rowTime = rowTime.substring(0,5);
               }
               
               let rowName = entry[2] || "-";
@@ -1135,39 +1123,25 @@
       });
   }
 
-  // PDF Download Function (सुंदर रसीद)
+  // PDF Download Function (HD Clean Format without buttons)
   function downloadLedgerPDF() {
-      let tableClone = document.getElementById('ledgerTable').cloneNode(true);
+      const element = document.getElementById('ledgerTable');
       
-      let rows = tableClone.rows;
-      for (let i = 0; i < rows.length; i++) {
-          if(rows[i].cells.length > 4) {
-              rows[i].deleteCell(-1);
-          }
-      }
+      // छुपकर डाउनलोड करने के लिए बटनों को थोड़ी देर के लिए हटा दें
+      const actionCells = element.querySelectorAll('td:last-child, th:last-child');
+      actionCells.forEach(cell => cell.style.display = 'none');
 
-      let printDiv = document.createElement('div');
-      printDiv.style.padding = '20px';
-      printDiv.style.background = '#ffffff';
-      printDiv.style.color = '#000000';
-      printDiv.innerHTML = '<h2 style="text-align:center; color:#1a3a5c; margin-bottom:20px; font-family:sans-serif;">Ashish Dairy - Advance & Ledger Report</h2>';
-      printDiv.appendChild(tableClone);
-
-      // बॉडी में छुपा कर जोड़ना (ताकि PDF बिल्कुल साफ़ आए)
-      printDiv.style.position = 'absolute';
-      printDiv.style.top = '-9999px';
-      document.body.appendChild(printDiv);
-
-      let opt = {
-          margin:       0.5,
+      const opt = {
+          margin:       0.3,
           filename:     'AshishDairy_Ledger_Report.pdf',
           image:        { type: 'jpeg', quality: 1 },
           html2canvas:  { scale: 2, useCORS: true },
           jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
 
-      html2pdf().set(opt).from(printDiv).save().then(() => {
-          document.body.removeChild(printDiv);
+      html2pdf().set(opt).from(element).save().then(() => {
+          // PDF डाउनलोड होते ही बटनों को वापस दिखा दें
+          actionCells.forEach(cell => cell.style.display = '');
       });
   }
 
