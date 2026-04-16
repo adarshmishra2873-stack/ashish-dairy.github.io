@@ -305,7 +305,7 @@
     <span onclick="toggleChat()" style="cursor:pointer; font-size:24px; line-height: 1;">&times;</span>
   </div>
   <div class="ai-chat-body" id="chatBody">
-    <div class="msg msg-ai">नमस्ते किसान भाई! 🙏 मैं आशीष मिश्रा मिल्क सेंटर का AI असिस्टेंट हूँ。<br><br>आप पशुओं की सेहत, बीमारियों या दूध बढ़ाने के तरीकों के बारे में कोई भी सवाल लिख कर या <b>माइक (🎤) दबाकर</b> पूछ सकते हैं।</div>
+    <div class="msg msg-ai">नमस्ते किसान भाई! 🙏 मैं आशीष मिश्रा मिल्क सेंटर का AI असिस्टेंट हूँ。<br><br>आप पशुओं की सेहत, बीमारियों या दूध बढ़ाने के तरीकों के बारे में कोई भी सवाल लिख कर या <b>माइक (🎤) दबाकर</b> पूछ सकते हैं।</div>
   </div>
   <div class="ai-chat-input">
     <input type="text" id="chatInput" placeholder="अपना सवाल यहाँ लिखें..." onkeypress="if(event.key === 'Enter') sendAiMsg()">
@@ -606,9 +606,9 @@
         <thead>
           <tr style="background: var(--blue);">
             <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">तारीख</th>
+            <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">शिफ्ट</th>
             <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">कुल दूध (Litre)</th>
             <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">कुल रकम (₹)</th>
-            <th style="padding: 15px; color: #fff; font-weight: bold; text-align: center;">ऐक्शन</th>
           </tr>
         </thead>
         <tbody id="dailyTotalBody" style="color: #000; background: #fff; text-align: center;"></tbody>
@@ -781,7 +781,7 @@
       chatBody.scrollTop = chatBody.scrollHeight;
       
       try {
-          const sysPrompt = "तुम 'आशीष मिश्रा मिल्क सेंटर' के एक AI पशु डॉक्टर और डेयरी असिस्टेंट हो। तुम्हारा काम किसानों को गाय/भैंस की बीमारियों, दूध बढ़ाने के तरीकों और चारे के बारे में सही और आसान हिंदी में जानकारी देना है। जवाब छोटे, आदरपूर्ण और सटीक होने चाहिए। ध्यान दें: किसान 'गाय' (Cow) को अंग्रेजी अक्षरों में 'Gay' लिख सकता है, इसे हमेशा पशु (Cow) ही समझें।";
+          const sysPrompt = "तुम 'आशीष मिश्रा मिल्क सेंटर' के एक AI पशु डॉक्टर और डेयरी असिस्टेंट हो। तुम्हारा काम किसानों को गाय/भैंस की बीमारियों, दूध बढ़ाने के तरीकों और चारे के बारे में सही और आसान हिंदी में जानकारी देना है। जवाब छोटे, आदरपूर्ण और सटीक होने चाहिए। ध्यान दें: किसान 'गाय' (Cow) को अंग्रेजी अक्षरों में 'Gay' लिख सकता है, इसे हमेशा पशु (Cow) ही समझें।";
           
           const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
               method: 'POST',
@@ -812,10 +812,10 @@
               reply = reply.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>'); 
               document.getElementById(aiThinkingId).innerHTML = reply;
           } else {
-               document.getElementById(aiThinkingId).innerText = "माफ़ करना किसान भाई, मुझे यह सवाल ठीक से समझ नहीं आया।";
+               document.getElementById(aiThinkingId).innerText = "माफ़ करना किसान भाई, मुझे यह सवाल ठीक से समझ नहीं आया।";
           }
       } catch(e) {
-          document.getElementById(aiThinkingId).innerText = "माफ़ करना, नेटवर्क में दिक्कत है। कृपया इंटरनेट चेक करें।";
+          document.getElementById(aiThinkingId).innerText = "माफ़ करना, नेटवर्क में दिक्कत है। कृपया इंटरनेट चेक करें।";
       }
       chatBody.scrollTop = chatBody.scrollHeight;
   }
@@ -839,7 +839,7 @@
       });
       document.getElementById('formSuccess').style.display = 'block';
     } catch (error) {
-      alert('कुछ गड़बड़ हो गई, कृपया इंटरनेट चेक करें।');
+      alert('कुछ गड़बड़ हो गई, कृपया इंटरनेट चेक करें।');
       document.querySelector('.btn-submit').style.display = 'block';
     }
   }
@@ -911,7 +911,7 @@
 
       const params = { name: document.getElementById('admName').value.trim(), date: combinedDate, fat: document.getElementById('admFat').value, snf: document.getElementById('admSnf').value, litre: document.getElementById('admLitre').value, total: document.getElementById('admTotal').value };
 
-      if(!document.getElementById('admName').value.trim() || !rawDate) { alert("कृपया किसान का नाम और तारीख ज़रूर भरें!"); return; }
+      if(!document.getElementById('admName').value.trim() || !rawDate) { alert("कृपया किसान का नाम और तारीख ज़रूर भरें!"); return; }
       btn.innerText = "सेव हो रहा है... ⏳"; btn.disabled = true;
 
       try {
@@ -919,13 +919,13 @@
           alert("बधाई हो! डेटा सुरक्षित सेव हो गया है।");
           document.getElementById('admName').value = ""; document.getElementById('admShift').value = "सुबह"; document.getElementById('admFat').value = ""; document.getElementById('admSnf').value = ""; document.getElementById('admLitre').value = ""; document.getElementById('admTotal').value = "";
           loadLiveRecords(); 
-      } catch (e) { alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।"); } 
+      } catch (e) { alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।"); } 
       finally { btn.innerText = "💾 डेटा सुरक्षित सेव करें"; btn.disabled = false; }
   }
 
   // === 5. दूध एंट्री मिटाना ===
   async function deleteRow(index) {
-      if(!confirm("क्या आप वाकई इस दूध की पर्ची को मिटाना चाहते हैं?")) return;
+      if(!confirm("क्या आप वाकई इस दूध की पर्ची को मिटाना चाहते हैं? (टोटल भी कम हो जाएगा)")) return;
       try { 
           await fetch(masterURL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams({action: "delete", rowIndex: index}) }); 
           alert("रिकॉर्ड सफलतापूर्वक हटा दिया गया!"); 
@@ -934,30 +934,13 @@
       catch (e) { alert("मिटाने में समस्या आई, इंटरनेट चेक करें।"); }
   }
 
-  // === मैनुअली डेली टोटल मिटाना ===
-  window.deleteDailyTotal = function(dateStr) {
-      if(!confirm(`क्या आप वाकई ${dateStr} का कुल हिसाब मिटाना चाहते हैं?`)) return;
-      
-      let persistentTotals = JSON.parse(localStorage.getItem('dailyTotalsPersistence')) || {};
-      delete persistentTotals[dateStr];
-      localStorage.setItem('dailyTotalsPersistence', JSON.stringify(persistentTotals));
-
-      let deletedDates = JSON.parse(localStorage.getItem('deletedDailyTotals')) || [];
-      if(!deletedDates.includes(dateStr)) {
-          deletedDates.push(dateStr);
-          localStorage.setItem('deletedDailyTotals', JSON.stringify(deletedDates));
-      }
-      
-      loadLiveRecords();
-  }
-
-  // === 6. दूध का डेटा दिखाना और परमानेंट टोटल करना (UPDATED WITH PERSISTENCE) ===
+  // === 6. दूध का डेटा दिखाना और परमानेंट टोटल करना (FIXED) ===
   async function loadLiveRecords() {
       const tableBody = document.getElementById('tableBodyContent');
       const dailyTotalBody = document.getElementById('dailyTotalBody');
 
       tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:20px;'>डेटा लोड हो रहा है... ⏳</td></tr>";
-      if(dailyTotalBody) dailyTotalBody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px;'>हिसाब जोड़ा जा रहा है... ⏳</td></tr>";
+      if(dailyTotalBody) dailyTotalBody.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:20px;'>हिसाब जोड़ा जा रहा है... ⏳</td></tr>";
 
       try {
           const response = await fetch(masterURL);
@@ -979,57 +962,46 @@
                       shiftStr = parts[1]; 
                   } else {
                       dateStr = formatDateToDDMMYYYY(dateStr);
+                      shiftStr = row[1] || "-"; // Also fetch shift from row[1] just in case it's stored there
                   }
+              } else {
+                  shiftStr = row[1] || "-";
               }
 
               let litre = parseFloat(row[4]) || 0;
               let amount = parseFloat(row[5]) || 0;
               
-              if(!sheetTotals[dateStr]) { sheetTotals[dateStr] = { litre: 0, amount: 0 }; }
-              sheetTotals[dateStr].litre += litre;
-              sheetTotals[dateStr].amount += amount;
+              let dailyKey = dateStr + "|" + shiftStr;
+
+              if(!sheetTotals[dailyKey]) { sheetTotals[dailyKey] = { date: dateStr, shift: shiftStr, litre: 0, amount: 0 }; }
+              sheetTotals[dailyKey].litre += litre;
+              sheetTotals[dailyKey].amount += amount;
 
               tableBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;"><td style="padding: 12px;">${dateStr}</td><td style="padding: 12px; color: #2C5F8A; font-weight:bold;">${shiftStr}</td><td style="padding: 12px; font-weight:bold;">${row[1] || '-'}</td><td style="padding: 12px;">${row[2]} / ${row[3]}</td><td style="padding: 12px;">${row[4]} L</td><td style="padding: 12px; color: #28a745; font-weight:bold;">₹ ${row[5]}</td><td style="padding: 12px; text-align:center;"><button onclick="deleteRow(${i})" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="मिटाएं">🗑️</button></td></tr>`;
           }
 
-          // DYNAMIC TOTAL CALCULATION WITH PERSISTENCE (100% Accuracy & Withstands Parchi Deletions)
+          // DYNAMIC TOTAL CALCULATION (Shift wise)
           if(dailyTotalBody) {
-              let persistentTotals = JSON.parse(localStorage.getItem('dailyTotalsPersistence')) || {};
-              let deletedDates = JSON.parse(localStorage.getItem('deletedDailyTotals')) || [];
-
-              // Update persistent totals from current live sheet
-              for (let date in sheetTotals) {
-                  if (deletedDates.includes(date)) continue; // skip manually deleted ones
-
-                  if (!persistentTotals[date]) {
-                      persistentTotals[date] = { litre: 0, amount: 0 };
-                  }
+              let totalKeys = Object.keys(sheetTotals).sort((a,b) => {
+                  let pA = sheetTotals[a].date.split('/'); 
+                  let pB = sheetTotals[b].date.split('/');
+                  let dateA = new Date(pA[2]+"-"+pA[1]+"-"+pA[0]);
+                  let dateB = new Date(pB[2]+"-"+pB[1]+"-"+pB[0]);
                   
-                  // Store highest values to protect against parchi deletion
-                  if (sheetTotals[date].amount >= persistentTotals[date].amount || persistentTotals[date].amount === 0) {
-                      persistentTotals[date].litre = sheetTotals[date].litre;
-                      persistentTotals[date].amount = sheetTotals[date].amount;
+                  if (dateB - dateA === 0) {
+                      if (sheetTotals[a].shift === 'सुबह' && sheetTotals[b].shift === 'शाम') return -1;
+                      if (sheetTotals[a].shift === 'शाम' && sheetTotals[b].shift === 'सुबह') return 1;
+                      return 0;
                   }
-              }
-              localStorage.setItem('dailyTotalsPersistence', JSON.stringify(persistentTotals));
-
-              // Sorting descending based on date
-              let totalKeys = Object.keys(persistentTotals).sort((a,b) => {
-                  let pA = a.split('/'); let pB = b.split('/');
-                  return new Date(pB[2]+"-"+pB[1]+"-"+pB[0]) - new Date(pA[2]+"-"+pA[1]+"-"+pA[0]);
+                  return dateB - dateA;
               });
-
-              for (const date of totalKeys) {
-                  if (deletedDates.includes(date)) continue;
-                  
-                  const totals = persistentTotals[date];
+              for (const key of totalKeys) {
+                  const totals = sheetTotals[key];
                   dailyTotalBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;">
-                      <td style="padding: 12px; font-weight:bold; color: #1a3a5c;">${date}</td>
+                      <td style="padding: 12px; font-weight:bold; color: #1a3a5c;">${totals.date}</td>
+                      <td style="padding: 12px; font-weight:bold; color: #2C5F8A;">${totals.shift}</td>
                       <td style="padding: 12px; font-weight:bold;">${totals.litre.toFixed(2)} L</td>
                       <td style="padding: 12px; font-weight:bold; color: #28a745;">₹ ${totals.amount.toFixed(2)}</td>
-                      <td style="padding: 12px; text-align:center;">
-                          <button onclick="deleteDailyTotal('${date}')" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:18px;" title="हिसाब मिटाएं">🗑️</button>
-                      </td>
                   </tr>`;
               }
           }
@@ -1039,7 +1011,7 @@
           if(dailyTotalBody) dailyTotalBody.innerHTML = "<tr><td colspan='4' style='text-align:center; color:red; padding:20px;'>हिसाब लोड नहीं हो सका।</td></tr>";
       }
   }
-
+  
   // === 7. नया LEDGER / KHATABOOK फंक्शन (GOOGLE SHEET) ===
   async function addLedgerEntry() {
       const btn = document.getElementById('ledgerSaveBtn');
@@ -1051,7 +1023,7 @@
       const reason = document.getElementById('ledgerReason').value.trim();
 
       if (!date || !name || !amount) {
-          alert("कृपया तारीख, नाम और रकम ज़रूर भरें!");
+          alert("कृपया तारीख, नाम और रकम ज़रूर भरें!");
           return;
       }
 
@@ -1075,7 +1047,7 @@
           document.getElementById('ledgerReason').value = "";
           loadLedgerRecords();
       } catch(e) {
-          alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।");
+          alert("इंटरनेट में गड़बड़ है, फिर से कोशिश करें।");
       } finally {
           btn.innerText = "➕ खाता शीट में दर्ज करें";
           btn.disabled = false;
@@ -1097,17 +1069,22 @@
               return;
           }
 
+          // उल्टे क्रम में दिखाएं (नया सबसे ऊपर), हेडिंग (i=0) को इग्नोर करें (i >= 1)
           for (let i = data.length - 1; i >= 1; i--) {
               const entry = data[i];
               if(!entry || !entry[0]) continue;
               
               let rawDateStr = entry[0].toString();
               
+              // HEADING FIX: अगर गलती से हेडिंग आ जाए तो उसे इग्नोर करें
               if(rawDateStr.includes('तारीख') || rawDateStr.includes('Date') || entry[2] === 'नाम (Farmer Name)') {
                   continue;
               }
               
+              // Date fix to DD/MM/YYYY
               let rowDate = formatDateToDDMMYYYY(rawDateStr);
+
+              // Time fix 
               let rowTime = entry[1] ? entry[1].toString() : "-";
               if (rowTime.includes('T')) {
                   rowTime = rowTime.split('T')[1].substring(0, 5);
@@ -1121,6 +1098,7 @@
               let rowType = entry[4] || "";
               let rowReason = entry[5] || "";
 
+              // लाल (Out) और हरा (In) रंग का लॉजिक
               let colorStyle = rowType.includes('Out') || rowType.includes('दिया') ? 'color: #dc3545;' : 'color: #28a745;';
 
               ledgerBody.innerHTML += `<tr style="border-bottom: 1px solid #eee;">
@@ -1139,6 +1117,7 @@
       }
   }
 
+  // लेजर से एंट्री मिटाने का फंक्शन
   async function deleteLedgerRow(rowIndex) {
       if(!confirm("क्या आप वाकई इस खाता एंट्री को मिटाना चाहते हैं?")) return;
       try { 
@@ -1150,6 +1129,7 @@
       }
   }
 
+  // सर्च बॉक्स (Filter Function)
   function filterLedger() {
       let input = document.getElementById("ledgerSearch").value.toLowerCase();
       let rows = document.querySelectorAll("#ledgerTableBody tr");
@@ -1159,64 +1139,29 @@
       });
   }
 
-  // FIXED PDF Download Function (Solves the rendering/blank/reding issue)
+  // PDF Download Function (HD Clean Format without buttons)
   function downloadLedgerPDF() {
-      const btn = document.querySelector("button[onclick='downloadLedgerPDF()']");
-      const originalText = btn.innerText;
-      btn.innerText = "PDF बन रहा है... ⏳";
-      btn.disabled = true;
-
       const element = document.getElementById('ledgerTable');
       
-      // Clone the table to avoid disrupting the UI or causing canvas overflow issues
-      const clone = element.cloneNode(true);
-      
-      // Remove Action column headers
-      const ths = clone.querySelectorAll('th');
-      if(ths.length > 0) ths[ths.length - 1].remove();
-      
-      // Remove Action column cells from all rows
-      const trs = clone.querySelectorAll('tbody tr');
-      trs.forEach(tr => {
-          const tds = tr.querySelectorAll('td');
-          if(tds.length > 0) tds[tds.length - 1].remove();
-      });
-
-      // Create a wrapper specifically designed for clean PDF generation
-      const wrapper = document.createElement('div');
-      wrapper.style.padding = '20px';
-      wrapper.style.background = '#fff';
-      wrapper.style.fontFamily = 'sans-serif';
-      
-      const title = document.createElement('h2');
-      title.innerText = 'एडवांस / नकद रिकॉर्ड (Ledger Report)';
-      title.style.textAlign = 'center';
-      title.style.color = '#1a3a5c';
-      wrapper.appendChild(title);
-      
-      clone.style.width = '100%';
-      clone.style.borderCollapse = 'collapse';
-      clone.style.color = '#000';
-      wrapper.appendChild(clone);
+      // छुपकर डाउनलोड करने के लिए बटनों को थोड़ी देर के लिए हटा दें
+      const actionCells = element.querySelectorAll('td:last-child, th:last-child');
+      actionCells.forEach(cell => cell.style.display = 'none');
 
       const opt = {
           margin:       0.3,
           filename:     'AshishDairy_Ledger_Report.pdf',
-          image:        { type: 'jpeg', quality: 0.98 },
+          image:        { type: 'jpeg', quality: 1 },
           html2canvas:  { scale: 2, useCORS: true },
           jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
 
-      html2pdf().set(opt).from(wrapper).save().then(() => {
-          btn.innerText = originalText;
-          btn.disabled = false;
-      }).catch(err => {
-          alert('PDF बनाने में त्रुटि हुई, कृपया इंटरनेट चेक करें।');
-          btn.innerText = originalText;
-          btn.disabled = false;
+      html2pdf().set(opt).from(element).save().then(() => {
+          // PDF डाउनलोड होते ही बटनों को वापस दिखा दें
+          actionCells.forEach(cell => cell.style.display = '');
       });
   }
 
+  // WhatsApp Send Function
   function sendWA(name, amt, type, reason) {
       let hindiType = type.includes('Out') || type.includes('दिया') ? "दिए गए हैं" : "जमा किए गए हैं";
       let msg = `*आशीष डेयरी*\nनमस्कार ${name} जी,\nआज आपके खाते में ₹${amt} ${hindiType}।\nकारण: ${reason}\n\nधन्यवाद!`;
@@ -1226,7 +1171,7 @@
   // === 8. ADMIN LOGIN ===
   function openAdmin(){
       var p = prompt("Admin Security PIN Dalein:");
-      if(p === "Ad$$"){ 
+      if(p === "Ad29"){ 
           document.getElementById('admin-panel').style.display = 'block'; 
           window.location.href = '#admin-panel'; 
           loadLiveRecords(); 
